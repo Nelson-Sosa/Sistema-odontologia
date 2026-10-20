@@ -102,7 +102,7 @@ function RegisterPage() {
             {APP_NAME}
           </h1>
           <p className="text-xs font-medium uppercase tracking-[0.2em] text-brand-text-muted">
-            Barbería Premium
+            Clínica Dental Premium
           </p>
         </div>
       </div>

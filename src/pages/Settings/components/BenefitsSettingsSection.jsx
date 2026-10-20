@@ -22,7 +22,7 @@ const REWARD_TYPE_OPTIONS = [
 /**
  * BenefitsSettingsSection
  *
- * Admin form for configuring the loyalty program (settings/salon → loyaltyProgram).
+ * Admin form for configuring the loyalty program (settings/business → loyaltyProgram).
  * The reward type is global to the program: a discount % or a free service.
  */
 export default function BenefitsSettingsSection() {

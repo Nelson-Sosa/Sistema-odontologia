@@ -51,7 +51,7 @@ function UserDashboardPage() {
         </h1>
         <p className="mt-1 text-sm text-brand-text-muted">
           {totalVisits === 0
-            ? 'Comienza tu experiencia en la barbería.'
+            ? 'Comienza tu experiencia en nuestra clínica.'
             : `Tienes ${totalVisits} visita${totalVisits !== 1 ? 's' : ''} completada${totalVisits !== 1 ? 's' : ''}.`
           }
         </p>
@@ -72,7 +72,7 @@ function UserDashboardPage() {
               <Scissors className="h-6 w-6" />
             </span>
             <div className="flex-1">
-              <p className="text-base font-semibold text-brand-text">Bienvenido a la barbería</p>
+              <p className="text-base font-semibold text-brand-text">Bienvenido a la clínica</p>
               <p className="mt-1 text-sm text-brand-text-muted leading-relaxed">
                 Reserva tu primer turno y comienza a disfrutar de todos los beneficios.
               </p>

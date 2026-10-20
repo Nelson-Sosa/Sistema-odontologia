@@ -56,7 +56,7 @@ function DashboardPage() {
             {greeting}, {firstName}
           </h1>
           <p className="mt-1 text-sm text-brand-text-muted">
-            Resumen operativo de la barbería
+            Resumen operativo de la clínica
           </p>
           <p className="mt-1 text-xs text-brand-text-muted">
             {dateStr}

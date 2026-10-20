@@ -40,11 +40,11 @@ service cloud.firestore {
     }
 
     // ─── SETTINGS ───
-    // settings/salon, settings/payments and settings/business live under /settings/{docId}
+    // settings/business, settings/payments live under /settings/{docId}
     match /settings/{docId} {
       // Public read: needed for the guest booking flow (business hours, payment
       // instructions, loyalty program config) and for public info on the site.
-      // Contains only salon-level config — no client PII.
+      // Contains only business-level config — no client PII.
       allow read: if true;
       // Only admins can write (bank data, payment config, etc.)
       allow write: if isAdmin();

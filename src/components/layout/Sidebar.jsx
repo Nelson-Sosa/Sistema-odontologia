@@ -72,7 +72,7 @@ function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, onMobileClose })
                 {APP_NAME}
               </span>
               <span className="block text-[10px] font-medium uppercase tracking-[0.18em] text-brand-text-muted">
-                Barbería
+                Clínica Dental
               </span>
             </div>
           )}

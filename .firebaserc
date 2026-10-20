@@ -1,7 +1,8 @@
 {
   "projects": {
-    "default": "sistema-barberia-23d77"
+    "default": "your-odontologia-project-id"
   },
   "targets": {},
-  "etags": {}
+  "etags": {},
+  "_comment": "Reemplazá 'your-odontologia-project-id' con el ID de tu nuevo proyecto Firebase"
 }

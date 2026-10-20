@@ -1,4 +1,4 @@
-/* Premium, outline-style barbershop category icons.
+/* Professional, outline-style service category icons.
    Shared visual treatment: round caps/joins, uniform 1.8 stroke, currentColor.
    Consistent with the lucide icon family used across the app. */
 
@@ -77,7 +77,7 @@ export function ProductsIcon({ className, ...props }) {
   )
 }
 
-/* Silla de barbería (barber chair) */
+/* Service chair icon */
 export function ChairIcon({ className, ...props }) {
   return (
     <svg {...base} className={className} aria-hidden="true" {...props}>

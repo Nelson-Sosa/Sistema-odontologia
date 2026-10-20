@@ -16,7 +16,7 @@ import { createRealtimeQuery } from '@/lib/firestoreRealtime'
 const BENEFITS_KEY = 'benefits'
 
 /**
- * Fetch the salon's benefits program settings in real time.
+ * Fetch the business's benefits program settings in real time.
  */
 export function useBenefitsSettings() {
   return useQuery({

@@ -171,7 +171,7 @@ function LoginPage() {
           </h1>
           {/* Subtitle */}
           <p className="max-w-sm text-sm font-medium leading-relaxed text-white/80 md:text-base">
-            Gestioná tu barbería de forma simple.
+            Gestioná tu clínica de forma simple y profesional.
           </p>
           {/* Gold accent line */}
           <div className="h-px w-16 bg-gradient-to-r from-transparent via-brand-gold to-transparent" />

@@ -1,7 +1,7 @@
-# NewProjectApp
+# Sistema Odontológico
 
-Sistema de gestión de negocios (reservas, clientes, servicios, agenda, cobros y portafolio).
-Base limpia y desacoplada, lista para evolucionar como un producto nuevo.
+Sistema de gestión para clínicas odontológicas (turnos, pacientes, tratamientos, agenda y administración).
+Base profesional lista para configurar y personalizar.
 
 ## Stack
 

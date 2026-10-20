@@ -1,9 +1,10 @@
 import { NavLink } from 'react-router-dom'
-import { ChevronLeft, ChevronRight, Scissors } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/utils/cn'
 import { NAV_ITEMS } from '@/constants/navigation'
-import { APP_NAME } from '@/constants/app'
 import { useAuth } from '@/hooks/useAuth'
+import { useBranding } from '@/hooks/useBranding'
+import { ToothIcon } from '@/components/icons/ToothIcon'
 import InstagramLink from './InstagramLink'
 
 /**
@@ -20,6 +21,7 @@ import InstagramLink from './InstagramLink'
  */
 function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, onMobileClose }) {
   const { role, loadingRole } = useAuth()
+  const { branding } = useBranding()
 
   const filteredItems = NAV_ITEMS.filter((item) => item.roles.includes(role))
 
@@ -60,19 +62,19 @@ function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, onMobileClose })
         >
           <div
             className={cn(
-              'flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-brand-primary text-brand-gold shadow-sm',
+              'flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-brand-primary shadow-sm',
               isCollapsed && 'h-8 w-8'
             )}
           >
-            <Scissors className="h-4 w-4" aria-hidden="true" />
+            <ToothIcon className="h-5 w-5" color="#FFFFFF" />
           </div>
           {!isCollapsed && (
             <div className="min-w-0">
               <span className="block truncate text-base font-bold tracking-tight text-brand-text">
-                {APP_NAME}
+                {branding.businessName}
               </span>
               <span className="block text-[10px] font-medium uppercase tracking-[0.18em] text-brand-text-muted">
-                Clínica Dental
+                Sistema de citas
               </span>
             </div>
           )}

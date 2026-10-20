@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronDown, Edit2, Plus, Scissors } from 'lucide-react'
+import { ChevronDown, Edit2, Plus } from 'lucide-react'
+import { ToothIcon } from '@/components/icons/ToothIcon'
 import {
   RazorIcon, ClippersIcon, BeardIcon, MustacheIcon, CombIcon, ProductsIcon, ChairIcon,
 } from '@/components/icons/CategoryIcons'
@@ -8,37 +9,26 @@ import { formatCurrency } from '@/utils/formatters'
 import ServiceCard from './ServiceCard'
 
 const CATEGORY_ICONS = [
-  /* More specific patterns first */
-  ['cortes', Scissors],
-  ['corte', Scissors],
-  ['hair', Scissors],
-  ['pelo', Scissors],
-  ['cabello', Scissors],
-  ['fade', Scissors],
+  /* Dental clinic patterns */
+  ['limpieza', ToothIcon],
+  ['consulta', ToothIcon],
+  ['ortodoncia', ToothIcon],
+  ['estetica', ToothIcon],
+  ['urgencia', ToothIcon],
+  ['tratamiento', ToothIcon],
+  ['dental', ToothIcon],
+  ['odonto', ToothIcon],
+  /* Legacy barbershop patterns (keep for backward compat) */
+  ['cortes', ToothIcon],
+  ['corte', ToothIcon],
   ['navaja', RazorIcon],
   ['rasurado', RazorIcon],
-  ['shave', RazorIcon],
-  ['afeitado', RazorIcon],
   ['maquina', ClippersIcon],
-  ['clipper', ClippersIcon],
   ['barba', BeardIcon],
-  ['beard', BeardIcon],
   ['bigote', MustacheIcon],
-  ['mustache', MustacheIcon],
-  ['moustache', MustacheIcon],
   ['peine', CombIcon],
-  ['comb', CombIcon],
   ['producto', ProductsIcon],
-  ['capilar', ProductsIcon],
-  ['shampoo', ProductsIcon],
-  ['champu', ProductsIcon],
   ['silla', ChairIcon],
-  ['chair', ChairIcon],
-  ['tinte', Scissors],
-  ['color', Scissors],
-  ['spa', Scissors],
-  ['tratamiento', Scissors],
-  ['facial', Scissors],
 ]
 
 function getCategoryIcon(name) {
@@ -46,7 +36,7 @@ function getCategoryIcon(name) {
   for (const [pattern, Icon] of CATEGORY_ICONS) {
     if (key.includes(pattern)) return Icon
   }
-  return Scissors
+  return ToothIcon
 }
 
 function CategoryCard({ category, services, isAdmin, onEditCategory, onAddService, onEditService, onDeleteService, onBook, defaultOpen }) {

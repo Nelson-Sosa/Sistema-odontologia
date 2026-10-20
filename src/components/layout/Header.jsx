@@ -2,9 +2,9 @@ import { Menu, Bell } from 'lucide-react'
 import { useState, useRef, useCallback } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { useUnreadCount } from '@/hooks/useNotifications'
+import { useBranding } from '@/hooks/useBranding'
 import { cn } from '@/utils/cn'
 import { getInitials } from '@/utils/formatters'
-import { APP_NAME, APP_TAGLINE } from '@/constants/app'
 import { Z_INDEX } from '@/constants/zIndex'
 import DropdownPortal from '@/components/ui/DropdownPortal'
 import NotificationsPanel from '@/components/notifications/NotificationsPanel'
@@ -12,6 +12,7 @@ import UserMenuDropdown from './UserMenuDropdown'
 
 function Header({ onMenuClick }) {
   const { user, userProfile, logout } = useAuth()
+  const { branding } = useBranding()
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
   const { data: unreadCount = 0 } = useUnreadCount()
@@ -65,13 +66,13 @@ function Header({ onMenuClick }) {
 
         <div className="hidden min-w-0 lg:block">
           <h1 className="truncate text-[15px] font-semibold tracking-tight text-brand-text">
-            {APP_NAME}
+            {branding.businessName}
           </h1>
-          <p className="truncate text-xs text-brand-text-muted">{APP_TAGLINE}</p>
+          <p className="truncate text-xs text-brand-text-muted">{branding.tagline}</p>
         </div>
 
         <span className="text-sm font-medium text-brand-text lg:hidden">
-          {APP_NAME}
+          {branding.businessName}
         </span>
       </div>
 

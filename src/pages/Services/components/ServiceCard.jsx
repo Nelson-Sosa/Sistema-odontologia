@@ -1,7 +1,9 @@
 import { useState } from 'react'
-import { Clock, Edit2, Trash2, Scissors } from 'lucide-react'
+import { Clock, Edit2, Trash2 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { formatCurrency } from '@/utils/formatters'
+import { useFeatures } from '@/hooks/useFeatures'
+import { ToothIcon } from '@/components/icons/ToothIcon'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
 import ConfirmDialog from '@/components/ui/ConfirmDialog'
@@ -18,6 +20,7 @@ function ServiceCard({ service, categoryName, isAdmin, onBook, onEdit }) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const { mutate: toggleActive } = useToggleServiceActive()
   const { mutateAsync: deleteService, isPending: isDeleting } = useDeleteService()
+  const features = useFeatures()
 
   const handleToggleActive = () => {
     toggleActive({ id: service.id, active: !service.active })
@@ -26,10 +29,10 @@ function ServiceCard({ service, categoryName, isAdmin, onBook, onEdit }) {
   const handleDelete = async () => {
     try {
       await deleteService(service.id)
-      toast.success('Servicio eliminado correctamente')
+      toast.success('Tratamiento eliminado correctamente')
       setShowDeleteConfirm(false)
     } catch {
-      toast.error('No se pudo eliminar el servicio')
+      toast.error('No se pudo eliminar el tratamiento')
     }
   }
 
@@ -50,7 +53,7 @@ function ServiceCard({ service, categoryName, isAdmin, onBook, onEdit }) {
           ) : (
             <div className="flex h-full w-full items-center justify-center">
               <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white/[0.05] border border-white/[0.08] shadow-inner transition-transform duration-300 group-hover:scale-105">
-                <Scissors className="h-7 w-7 text-brand-gold transition-transform duration-300" />
+                <ToothIcon className="h-7 w-7 text-brand-accent transition-transform duration-300" />
               </div>
             </div>
           )}
@@ -60,8 +63,8 @@ function ServiceCard({ service, categoryName, isAdmin, onBook, onEdit }) {
             <div className="absolute right-2.5 top-2.5 flex items-center gap-1.5">
               <button
                 onClick={onEdit}
-                className="flex h-7 w-7 items-center justify-center rounded-lg bg-black/60 text-white backdrop-blur-sm transition-colors hover:bg-black/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold"
-                title="Editar servicio"
+                className="flex h-7 w-7 items-center justify-center rounded-lg bg-black/60 text-white backdrop-blur-sm transition-colors hover:bg-black/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent"
+                title="Editar tratamiento"
                 type="button"
               >
                 <Edit2 className="h-3.5 w-3.5" />
@@ -69,7 +72,7 @@ function ServiceCard({ service, categoryName, isAdmin, onBook, onEdit }) {
               <button
                 onClick={() => setShowDeleteConfirm(true)}
                 className="flex h-7 w-7 items-center justify-center rounded-lg bg-black/60 text-white backdrop-blur-sm transition-colors hover:bg-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
-                title="Eliminar servicio"
+                title="Eliminar tratamiento"
                 type="button"
               >
                 <Trash2 className="h-3.5 w-3.5" />
@@ -109,14 +112,16 @@ function ServiceCard({ service, categoryName, isAdmin, onBook, onEdit }) {
 
           {/* ── Action & Price Row ───────────────────────────────────────── */}
           <div className="mt-4 flex items-center justify-between gap-3 border-t border-brand-border/70 pt-3">
-            <div className="flex flex-col min-w-0">
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-brand-text-muted/80">
-                Precio
-              </span>
-              <span className="text-lg font-bold tracking-tight text-brand-gold truncate">
-                {formatCurrency(service.price)}
-              </span>
-            </div>
+            {features.showPrices && (
+              <div className="flex flex-col min-w-0">
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-brand-text-muted/80">
+                  Precio
+                </span>
+                <span className="text-lg font-bold tracking-tight text-brand-accent truncate">
+                  {formatCurrency(service.price)}
+                </span>
+              </div>
+            )}
 
             {isAdmin ? (
               <Button
@@ -130,16 +135,16 @@ function ServiceCard({ service, categoryName, isAdmin, onBook, onEdit }) {
               <Button
                 className={cn(
                   'h-11 min-h-[44px] px-5 rounded-xl text-sm font-semibold tracking-wide shrink-0',
-                  'bg-brand-gold text-brand-primary shadow-sm shadow-brand-gold/20',
-                  'hover:bg-[#b89322] active:bg-[#a17e17]',
-                  'focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2',
+                  'bg-brand-accent text-white shadow-sm shadow-brand-accent/20',
+                  'hover:bg-brand-primary active:bg-brand-primary-hover',
+                  'focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2',
                   'transition-all duration-200',
                   !active && 'opacity-60 cursor-not-allowed'
                 )}
                 onClick={onBook}
                 disabled={!active}
               >
-                Reservar Turno
+                Solicitar cita
               </Button>
             )}
           </div>
@@ -150,7 +155,7 @@ function ServiceCard({ service, categoryName, isAdmin, onBook, onEdit }) {
         isOpen={showDeleteConfirm}
         onClose={() => setShowDeleteConfirm(false)}
         onConfirm={handleDelete}
-        title="Eliminar Servicio"
+        title="Eliminar Tratamiento"
         message={`¿Estás seguro de que querés eliminar "${service.name}"? Esta acción no se puede deshacer.`}
         confirmLabel="Eliminar"
         isLoading={isDeleting}

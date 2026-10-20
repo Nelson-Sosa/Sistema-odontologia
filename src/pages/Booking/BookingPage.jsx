@@ -8,6 +8,7 @@ import { useActiveCategories } from '@/hooks/useServiceCategories'
 import { usePaymentSettings } from '@/hooks/usePaymentSettings'
 import { useBusinessSettings } from '@/hooks/useBusinessSettings'
 import { usePageTitle } from '@/hooks/usePageTitle'
+import { useFeatures } from '@/hooks/useFeatures'
 import {
   createGuestAppointment,
   createUserAppointment,
@@ -35,9 +36,10 @@ function capitalize(str = '') {
 }
 
 function BookingPage() {
-  usePageTitle('Reservar Turno')
+  usePageTitle('Solicitar Cita')
   const navigate = useNavigate()
   const location = useLocation()
+  const features = useFeatures()
 
   const { user, userProfile, isAuthenticated, loading: authLoading, logout } = useAuth()
   const { data: services, isLoading: loadingServices } = useServices()
@@ -128,7 +130,7 @@ function BookingPage() {
   // ─── Slot validation & continue to identity ───────────────────────────────
   const continueFromSlot = async () => {
     if (!selectedService) {
-      toast.error('Seleccioná un servicio')
+      toast.error('Seleccioná un tratamiento')
       setStep(STEPS.SERVICE)
       return
     }
@@ -289,9 +291,9 @@ function BookingPage() {
     <div className="mx-auto w-full max-w-2xl">
       {/* ── Header + progress ─────────────────────────────────────────────── */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-brand-text">Reservar Turno</h1>
+        <h1 className="text-2xl font-bold text-brand-text">Solicitar Cita</h1>
         <p className="mt-1 text-sm text-brand-text-muted">
-          Elegí tu servicio, el horario y confirmá tu reserva sin necesidad de crear una cuenta.
+          Elegí tu tratamiento, el horario y confirmá tu reserva sin necesidad de crear una cuenta.
         </p>
 
         {step !== STEPS.SUCCESS && (
@@ -329,7 +331,7 @@ function BookingPage() {
               >
                 <p className="font-medium text-brand-text">{cat.name}</p>
                 <p className="mt-1 text-xs text-brand-text-muted">
-                  {services?.filter((s) => s.categoryId === cat.id && s.active !== false).length} servicios
+                  {services?.filter((s) => s.categoryId === cat.id && s.active !== false).length} tratamientos
                 </p>
               </button>
             ))}
@@ -342,11 +344,11 @@ function BookingPage() {
         <div className="space-y-3">
           <p className="text-sm font-medium text-brand-text">
             {selectedCategoryId
-              ? `Servicios de ${categories?.find((c) => c.id === selectedCategoryId)?.name || ''}`
-              : 'Seleccioná un servicio'}
+              ? `Tratamientos de ${categories?.find((c) => c.id === selectedCategoryId)?.name || ''}`
+              : 'Seleccioná un tratamiento'}
           </p>
           {loadingServices ? (
-            <div className="py-8 text-center text-sm text-brand-text-muted">Cargando servicios…</div>
+            <div className="py-8 text-center text-sm text-brand-text-muted">Cargando tratamientos…</div>
           ) : (
             <div className="space-y-2 max-h-[60vh] overflow-y-auto">
               {(selectedCategoryId ? servicesByCategory : services?.filter((s) => s.active !== false) || []).map((svc) => (
@@ -366,7 +368,7 @@ function BookingPage() {
                 </button>
               ))}
               {selectedCategoryId && servicesByCategory.length === 0 && (
-                <p className="text-sm text-brand-text-muted">No hay servicios en esta categoría.</p>
+                <p className="text-sm text-brand-text-muted">No hay tratamientos en esta categoría.</p>
               )}
             </div>
           )}
@@ -543,7 +545,7 @@ function BookingPage() {
               variant="outline"
               onClick={() => navigate(ROUTES.SERVICES)}
             >
-              Volver a servicios
+              Volver a tratamientos
             </Button>
             {isAuthenticated && (
               <Button onClick={() => navigate(ROUTES.APPOINTMENTS)}>

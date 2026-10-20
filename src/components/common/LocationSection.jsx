@@ -15,7 +15,7 @@ export default function LocationSection() {
           </div>
           <h2 className="mb-3 text-2xl font-bold text-brand-text sm:text-3xl">Nuestra Ubicación</h2>
           <p className="mb-8 text-brand-text-muted">
-            Vení a conocernos y viví la experiencia de nuestro servicio en un espacio diseñado para tu comodidad.
+            Vení a conocernos y viví la experiencia de nuestra atención en un espacio diseñado para tu comodidad.
           </p>
           
           <div className="space-y-6">

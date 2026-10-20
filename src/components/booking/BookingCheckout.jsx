@@ -27,7 +27,7 @@ function Row({ label, value, accent = false }) {
  * - Si no → ofrece login o continuar como invitado (formulario).
  *
  * @param {Object} props
- * @param {Object} props.service - Servicio seleccionado
+ * @param {Object} props.service - Tratamiento seleccionado
  * @param {string} props.dateLabel - Fecha formateada (ej: "Martes 12 de agosto")
  * @param {string} props.dateStr   - Fecha en formato yyyy-MM-dd
  * @param {string} props.time
@@ -89,9 +89,9 @@ export default function BookingCheckout({
       {/* Summary */}
       <div className="rounded-xl border border-brand-border bg-brand-card p-4 space-y-3">
         <p className="text-xs font-semibold text-brand-text-muted uppercase tracking-wider">
-          Resumen de tu turno
+          Resumen de tu cita
         </p>
-        <Row label="Servicio seleccionado" value={service.name} />
+        <Row label="Tratamiento seleccionado" value={service.name} />
         <Row label="Fecha" value={dateLabel} />
         <Row label="Hora" value={`${time} hs`} />
         <Row label="Duración" value={durationLabel} />
@@ -112,7 +112,7 @@ export default function BookingCheckout({
             </div>
             <div className="flex-1">
               <p className="text-sm font-semibold text-brand-text">
-                Reservás como {userName || 'cliente'}
+                Reservás como {userName || 'paciente'}
               </p>
               <p className="text-xs text-brand-text-muted">
                 {[userEmail, userPhone].filter(Boolean).join(' · ') || 'Cuenta registrada'}

@@ -47,10 +47,10 @@ function ServiceModal({ isOpen, onClose, service, defaultCategoryId }) {
       }
       if (service) {
         await updateService({ id: service.id, data: payload })
-        toast.success('Servicio actualizado')
+        toast.success('Tratamiento actualizado')
       } else {
         await createService(payload)
-        toast.success('Servicio creado')
+        toast.success('Tratamiento creado')
       }
       onClose()
       reset()
@@ -65,7 +65,7 @@ function ServiceModal({ isOpen, onClose, service, defaultCategoryId }) {
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={service ? 'Editar Servicio' : 'Nuevo Servicio'}
+      title={service ? 'Editar Tratamiento' : 'Nuevo Tratamiento'}
       maxWidthClass="max-w-md"
       footer={
         <FormActions>
@@ -80,8 +80,8 @@ function ServiceModal({ isOpen, onClose, service, defaultCategoryId }) {
     >
       <form id="service-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <Input 
-          label="Nombre del servicio" 
-          placeholder="Ej. Servicio"
+          label="Nombre del tratamiento" 
+          placeholder="Ej. Limpieza dental"
           error={errors.name?.message}
           {...register('name')}
         />

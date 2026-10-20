@@ -6,9 +6,9 @@ import {
   Settings,
   UserCircle,
   Home,
-  Scissors,
 } from 'lucide-react'
 import { ROUTES } from '@/routes/routes'
+import { ToothIcon } from '@/components/icons/ToothIcon'
 
 /**
  * Main navigation items for the Sidebar.
@@ -43,34 +43,34 @@ export const NAV_ITEMS = [
   },
   {
     id: 'appointments',
-    label: 'Turnos',
+    label: 'Citas',
     path: ROUTES.APPOINTMENTS,
     icon: CalendarDays,
-    description: 'Gestión de turnos',
+    description: 'Gestión de citas',
     roles: ['admin', 'user'],
   },
   {
     id: 'clients',
-    label: 'Clientes',
+    label: 'Pacientes',
     path: ROUTES.CLIENTS,
     icon: Users,
-    description: 'Base de clientes',
+    description: 'Base de pacientes',
     roles: ['admin'],
   },
   {
     id: 'services',
-    label: 'Servicios',
+    label: 'Tratamientos',
     path: ROUTES.SERVICES,
-    icon: Scissors,
-    description: 'Servicios y precios',
+    icon: ToothIcon,
+    description: 'Tratamientos y precios',
     roles: ['admin', 'user'],
   },
   {
     id: 'booking',
-    label: 'Reservar',
+    label: 'Solicitar Cita',
     path: ROUTES.BOOKING,
     icon: CalendarPlus,
-    description: 'Reservar un turno',
+    description: 'Solicitar una cita',
     roles: ['user'],
   },
   // {

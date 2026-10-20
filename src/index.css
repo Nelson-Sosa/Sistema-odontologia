@@ -15,23 +15,20 @@
   /* Typography */
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
 
-  /* ── Brand Color Palette (Sober & Premium) ── */
+  /* ── Brand Color Palette (Configurable via Firestore) ── */
   --color-brand-bg: #F7F7F7;
   --color-brand-card: #FFFFFF;
-  --color-brand-primary: #161616;
-  --color-brand-primary-hover: #2A2A2A;
-  --color-brand-secondary: #2A2A2A;
-  --color-brand-pastel: #E6E6E6;
+  --color-brand-primary: #0E7490;        /* Cyan-700 - Azul clínico */
+  --color-brand-primary-hover: #0891B2;  /* Cyan-600 */
+  --color-brand-secondary: #06B6D4;      /* Cyan-500 - Cyan claro */
+  --color-brand-accent: #10B981;         /* Emerald-500 - Verde menta */
+  --color-brand-pastel: #E0F2FE;         /* Cyan-100 */
   --color-brand-text: #1B1B1B;
   --color-brand-text-muted: #6B7280;
   --color-brand-text-inverse: #FFFFFF;
   --color-brand-success: #16A34A;
-  --color-brand-border: #E6E6E6;
-  --color-brand-alt-row: #F3F4F6;
-
-  /* Elegant gold accent — used sparingly for important actions */
-  --color-brand-gold: #C9A227;
-  --color-brand-gold-soft: #F5ECD2;
+  --color-brand-border: #E0E7FF;         /* Indigo-100 */
+  --color-brand-alt-row: #F0F9FF;        /* Sky-50 */
 
   /* Border radius tokens */
   --radius-sm: 0.375rem;   /* 6px */

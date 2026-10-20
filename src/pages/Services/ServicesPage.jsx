@@ -1,10 +1,12 @@
 import { useState, useMemo } from 'react'
-import { Scissors, Plus, FolderKanban, Search, X } from 'lucide-react'
+import { Plus, FolderKanban, Search, X } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { usePageTitle } from '@/hooks/usePageTitle'
 import { useAuth } from '@/hooks/useAuth'
 import { useServices, useAllServices, useDeleteService } from '@/hooks/useServices'
 import { useCategories } from '@/hooks/useServiceCategories'
+import { useFeatures } from '@/hooks/useFeatures'
+import { ToothIcon } from '@/components/icons/ToothIcon'
 import { ROUTES } from '@/routes/routes'
 import { USER_ROLES } from '@/constants/app'
 import Button from '@/components/ui/Button'
@@ -17,8 +19,9 @@ import toast from 'react-hot-toast'
 import { cn } from '@/utils/cn'
 
 function ServicesPage() {
-  usePageTitle('Servicios')
+  usePageTitle('Tratamientos')
   const navigate = useNavigate()
+  const features = useFeatures()
 
   const { role } = useAuth()
   const isAdmin = role === USER_ROLES.ADMIN
@@ -125,7 +128,7 @@ function ServicesPage() {
     if (!serviceToDelete) return
     try {
       await deleteService(serviceToDelete.id)
-      toast.success('Servicio eliminado')
+      toast.success('Tratamiento eliminado')
       setServiceToDelete(null)
     } catch (error) {
       toast.error('Ocurrió un error al eliminar')
@@ -154,14 +157,14 @@ function ServicesPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-brand-border bg-brand-card px-3 py-1 text-xs font-medium text-brand-text-muted">
-            <Scissors className="h-3.5 w-3.5 text-brand-gold" />
+            <ToothIcon className="h-3.5 w-3.5 text-brand-accent" />
             Catálogo
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-brand-text sm:text-3xl">
-            Catálogo de Servicios
+            Catálogo de Tratamientos
           </h1>
           <p className="mt-1.5 text-sm text-brand-text-muted">
-            Explorá nuestros servicios y reservá tu turno.
+            Explorá nuestros tratamientos y solicitá tu cita.
           </p>
         </div>
 
@@ -179,7 +182,7 @@ function ServicesPage() {
                 leftIcon={<Plus className="h-4 w-4" />}
                 onClick={handleAddServiceGeneric}
               >
-                Nuevo Servicio
+                Nuevo Tratamiento
               </Button>
             </>
           )}
@@ -302,14 +305,14 @@ function ServicesPage() {
         ) : (
           <div className="flex h-64 flex-col items-center justify-center rounded-2xl border border-dashed border-brand-border bg-brand-card">
             <Search className="mb-3 h-10 w-10 text-brand-text-muted opacity-50" />
-            <p className="text-lg font-medium text-brand-text-muted">No se encontraron servicios</p>
+            <p className="text-lg font-medium text-brand-text-muted">No se encontraron tratamientos</p>
             <p className="mt-1 text-sm text-brand-text-muted">Intentá con otros términos de búsqueda.</p>
           </div>
         )
       ) : (
         <div className="flex h-64 flex-col items-center justify-center rounded-2xl border border-dashed border-brand-border bg-brand-card">
-          <Scissors className="mb-3 h-10 w-10 text-brand-text-muted" />
-          <p className="text-lg font-medium text-brand-text-muted">No hay servicios disponibles</p>
+          <ToothIcon className="mb-3 h-10 w-10 text-brand-text-muted" />
+          <p className="text-lg font-medium text-brand-text-muted">No hay tratamientos disponibles</p>
         </div>
       )}
 
@@ -337,8 +340,8 @@ function ServicesPage() {
         isOpen={!!serviceToDelete}
         onClose={() => setServiceToDelete(null)}
         onConfirm={handleDeleteService}
-        title="Eliminar Servicio"
-        message={`¿Estás seguro que querés eliminar el servicio "${serviceToDelete?.name}"? Esta acción no se puede deshacer.`}
+        title="Eliminar Tratamiento"
+        message={`¿Estás seguro que querés eliminar el tratamiento "${serviceToDelete?.name}"? Esta acción no se puede deshacer.`}
         confirmLabel="Eliminar"
         isLoading={isDeleting}
       />

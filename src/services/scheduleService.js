@@ -245,7 +245,7 @@ export function getScheduleErrorMessage(reason) {
     case 'NOT_ALIGNED':
       return 'La hora debe coincidir con el intervalo configurado de la agenda'
     case 'DOES_NOT_FIT':
-      return 'El servicio no entra completo dentro del bloque horario seleccionado'
+      return 'El tratamiento no entra completo dentro del bloque horario seleccionado'
     default:
       return 'El horario seleccionado no está dentro de los bloques de atención'
   }

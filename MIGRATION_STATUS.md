@@ -69,30 +69,24 @@ Si se usará subida de comprobantes de pago:
    VITE_CLOUDINARY_UPLOAD_PRESET=tu-preset
    ```
 
-### Git Repository
-Decidir estrategia de repositorio:
+### Git Repository ✅ COMPLETADO
 
-**Opción A: Nuevo repositorio (historial limpio)**
-```bash
-# Eliminar historial anterior
-rm -rf .git
+**Repositorio vinculado:** https://github.com/Nelson-Sosa/Sistema-odontologia.git
 
-# Inicializar nuevo repositorio
-git init
-git add .
-git commit -m "feat: initial commit - sistema odontológico"
+✅ Remoto `origin` configurado correctamente  
+✅ Rama `main` con tracking habilitado  
+✅ Todos los commits subidos al nuevo repositorio  
+✅ Historial completo conservado (PatyNails → Barbería → Odontología)
 
-# Conectar a nuevo remoto
-git remote add origin https://github.com/tu-usuario/sistema-odontologia.git
-git push -u origin main
+**Estado actual:**
+```
+Rama: main
+Remoto: origin/main
+Commits: 1069 objetos subidos
+Working tree: limpio
 ```
 
-**Opción B: Conservar historial**
-```bash
-# El remoto ya fue eliminado, solo agregar el nuevo
-git remote add origin https://github.com/tu-usuario/sistema-odontologia.git
-git push -u origin main
-```
+El repositorio está listo para continuar desarrollo.
 
 ---
 
@@ -122,7 +116,7 @@ git push -u origin main
 - [ ] Reglas de Firestore desplegadas
 - [ ] Authentication habilitado (Email/Password, Google)
 - [ ] Cloudinary configurado (si se usa)
-- [ ] Repositorio Git configurado
+- [x] Repositorio Git configurado ✅
 
 ### Desarrollo
 - [ ] `npm install` ejecutado

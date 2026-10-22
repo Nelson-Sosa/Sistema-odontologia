@@ -15,16 +15,16 @@ function PagePlaceholder({ title, description, icon: Icon }) {
     <div className="flex min-h-[60vh] flex-col items-center justify-center text-center">
       <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-brand-primary">
         {Icon ? (
-          <Icon className="h-9 w-9 text-brand-gold" />
+          <Icon className="h-9 w-9 text-white" />
         ) : (
-          <Construction className="h-9 w-9 text-brand-gold/70" />
+          <Construction className="h-9 w-9 text-white/80" />
         )}
       </div>
       <h1 className="mt-6 text-2xl font-bold text-brand-text">{title}</h1>
       <p className="mt-2 max-w-sm text-sm text-brand-text-muted">
         {description || 'Esta sección está en desarrollo. Volvé pronto.'}
       </p>
-      <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-brand-gold/30 bg-brand-gold/10 px-4 py-2 text-xs font-medium text-brand-gold">
+      <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-brand-accent/30 bg-brand-accent/10 px-4 py-2 text-xs font-medium text-brand-accent">
         <Construction className="h-3.5 w-3.5" />
         Próximamente
       </div>

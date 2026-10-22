@@ -3,32 +3,30 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown, Edit2, Plus } from 'lucide-react'
 import { ToothIcon } from '@/components/icons/ToothIcon'
 import {
-  RazorIcon, ClippersIcon, BeardIcon, MustacheIcon, CombIcon, ProductsIcon, ChairIcon,
+  BracesIcon, DentalMirrorIcon, WhiteningIcon, ImplantIcon, EmergencyCrossIcon, DentalChairIcon
 } from '@/components/icons/CategoryIcons'
+import { useFeatures } from '@/hooks/useFeatures'
 import { formatCurrency } from '@/utils/formatters'
 import ServiceCard from './ServiceCard'
 
 const CATEGORY_ICONS = [
   /* Dental clinic patterns */
+  ['ortodoncia', BracesIcon],
+  ['bracket', BracesIcon],
   ['limpieza', ToothIcon],
-  ['consulta', ToothIcon],
-  ['ortodoncia', ToothIcon],
-  ['estetica', ToothIcon],
-  ['urgencia', ToothIcon],
+  ['profilaxis', ToothIcon],
+  ['estetica', WhiteningIcon],
+  ['blanqueamiento', WhiteningIcon],
+  ['implante', ImplantIcon],
+  ['protesis', ImplantIcon],
+  ['urgencia', EmergencyCrossIcon],
+  ['emergencia', EmergencyCrossIcon],
+  ['consulta', DentalMirrorIcon],
+  ['diagnostico', DentalMirrorIcon],
+  ['general', DentalChairIcon],
   ['tratamiento', ToothIcon],
   ['dental', ToothIcon],
   ['odonto', ToothIcon],
-  /* Legacy barbershop patterns (keep for backward compat) */
-  ['cortes', ToothIcon],
-  ['corte', ToothIcon],
-  ['navaja', RazorIcon],
-  ['rasurado', RazorIcon],
-  ['maquina', ClippersIcon],
-  ['barba', BeardIcon],
-  ['bigote', MustacheIcon],
-  ['peine', CombIcon],
-  ['producto', ProductsIcon],
-  ['silla', ChairIcon],
 ]
 
 function getCategoryIcon(name) {
@@ -41,6 +39,7 @@ function getCategoryIcon(name) {
 
 function CategoryCard({ category, services, isAdmin, onEditCategory, onAddService, onEditService, onDeleteService, onBook, defaultOpen }) {
   const [isOpen, setIsOpen] = useState(defaultOpen ?? true)
+  const features = useFeatures()
 
   const activeServices = services.filter((s) => s.active !== false)
   const Icon = getCategoryIcon(category.name)
@@ -78,14 +77,14 @@ function CategoryCard({ category, services, isAdmin, onEditCategory, onAddServic
 
         {/* RIGHT: Stats + Actions + Chevron */}
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          {minPrice > 0 && (
+          {features.showPrices && minPrice > 0 && (
             <span className="hidden whitespace-nowrap text-xs text-brand-text-muted md:block">
               Desde {formatCurrency(minPrice)}
             </span>
           )}
 
           <span className="hidden items-center gap-1 rounded-full border border-brand-border bg-brand-alt-row px-2.5 py-1 text-xs font-medium text-brand-text-muted sm:inline-flex">
-            {activeServices.length} servicio{activeServices.length !== 1 ? 's' : ''}
+            {activeServices.length} tratamiento{activeServices.length !== 1 ? 's' : ''}
           </span>
 
           {isAdmin && (

@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
-import { CalendarDays, Clock, DollarSign, Scissors, Gift, Sparkles } from 'lucide-react'
+import { CalendarDays, Clock, DollarSign, Gift, Sparkles, Activity } from 'lucide-react'
+import { ToothIcon } from '@/components/icons/ToothIcon'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { useClientHistory } from '@/hooks/useClients'
@@ -191,14 +192,14 @@ function ClientHistoryModal({ isOpen, onClose, client }) {
                             'flex h-8 w-8 items-center justify-center rounded-lg shrink-0',
                             isActive ? 'bg-brand-success/10' : 'bg-brand-pastel/30'
                           )}>
-                            <Scissors className={cn(
+                            <ToothIcon className={cn(
                               'h-4 w-4',
                               isActive ? 'text-brand-success' : 'text-brand-text-muted'
                             )} />
                           </div>
                           <div className="min-w-0">
                             <p className="text-sm font-medium text-brand-text truncate">
-                              {apt.serviceName || 'Servicio'}
+                              {apt.serviceName || 'Tratamiento'}
                             </p>
                             <p className="text-xs text-brand-text-muted">
                               {format(aptDate, "d 'de' MMM, yyyy", { locale: es })}
@@ -222,8 +223,8 @@ function ClientHistoryModal({ isOpen, onClose, client }) {
                 </div>
               ) : (
                 <div className="flex h-32 flex-col items-center justify-center rounded-xl border border-dashed border-brand-pastel bg-brand-pastel/10">
-                  <Scissors className="mb-2 h-6 w-6 text-brand-text-muted" />
-                  <p className="text-sm text-brand-text-muted">No tiene turnos registrados</p>
+                  <ToothIcon className="mb-2 h-6 w-6 text-brand-text-muted" />
+                  <p className="text-sm text-brand-text-muted">No tiene citas registradas</p>
                 </div>
               )}
             </div>
@@ -236,8 +237,8 @@ function ClientHistoryModal({ isOpen, onClose, client }) {
                 await redeemMutation.mutateAsync({ clientId: client.id, adminUid: user?.uid })
                 setConfirmRedeem(false)
               }}
-              title={isFreeService ? 'Canjear Servicio Gratis' : `Canjear Descuento del ${rewardValue}%`}
-              message={`¿Estás seguro de que deseas canjear 1 ${isFreeService ? 'servicio gratis' : `descuento del ${rewardValue}%`} para ${client.name}?`}
+              title={isFreeService ? 'Canjear Tratamiento sin costo' : `Canjear Descuento del ${rewardValue}%`}
+              message={`¿Estás seguro de que deseas canjear 1 ${isFreeService ? 'tratamiento sin costo' : `descuento del ${rewardValue}%`} para ${client.name}?`}
               confirmLabel="Canjear"
               isLoading={redeemMutation.isPending}
             />

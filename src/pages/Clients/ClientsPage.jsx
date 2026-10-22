@@ -10,7 +10,7 @@ import ClientModal from './components/ClientModal'
 import ClientHistoryModal from './components/ClientHistoryModal'
 
 function ClientsPage() {
-  usePageTitle('Clientes')
+  usePageTitle('Pacientes')
   const { data: clients, isLoading } = useClients()
   const [search, setSearch] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -43,16 +43,16 @@ function ClientsPage() {
       {/* ── Header ──────────────────────────────────────────────────────────── */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-brand-text">Directorio de Clientes</h1>
+          <h1 className="text-2xl font-bold text-brand-text">Directorio de Pacientes</h1>
           <p className="mt-1 text-sm text-brand-text-muted">
-            Gestioná tu base de clientes y su historial.
+            Gestioná tu base de pacientes y su historial clínico.
           </p>
         </div>
         <Button 
           leftIcon={<Plus className="h-4 w-4" />}
           onClick={() => setIsModalOpen(true)}
         >
-          Nuevo Cliente
+          Nuevo Paciente
         </Button>
       </div>
 
@@ -86,7 +86,7 @@ function ClientsPage() {
         ) : (
           <div className="flex h-64 flex-col items-center justify-center rounded-xl border border-dashed border-brand-border bg-brand-alt-row">
             <Users className="mb-3 h-10 w-10 text-brand-text-muted/50" />
-            <p className="text-lg font-medium text-brand-text-muted">No se encontraron clientes</p>
+            <p className="text-lg font-medium text-brand-text-muted">No se encontraron pacientes</p>
           </div>
         )}
       </div>

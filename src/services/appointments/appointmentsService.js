@@ -211,7 +211,7 @@ async function createAppointmentRecord(data, meta = {}) {
         entityType: 'appointment',
       })
     : createNotification({
-        title: 'Nuevo turno',
+        title: 'Nueva cita',
         message: `${payload.clientName} reservó ${payload.serviceName}`,
         type: NOTIFICATION_TYPES.APPOINTMENT_CREATED,
         entityId: ref.id,
@@ -321,8 +321,8 @@ export async function updateAppointmentStatus(id, newStatus, extraData = {}) {
     if (snap.exists()) {
       const data = snap.data()
       createNotification({
-        title: 'Turno cancelado',
-        message: `${data.clientName || 'Un cliente'} canceló su turno`,
+        title: 'Cita cancelada',
+        message: `${data.clientName || 'Un paciente'} canceló su cita`,
         type: NOTIFICATION_TYPES.APPOINTMENT_CANCELLED,
         entityId: id,
         entityType: 'appointment',
@@ -362,8 +362,8 @@ export async function updateAppointmentDetails(id, data) {
 
   if (beforeData) {
     createNotification({
-      title: 'Turno actualizado',
-      message: `Se modificó un turno de ${beforeData.clientName || 'un cliente'}`,
+      title: 'Cita actualizada',
+      message: `Se modificó una cita de ${beforeData.clientName || 'un paciente'}`,
       type: NOTIFICATION_TYPES.APPOINTMENT_UPDATED,
       entityId: id,
       entityType: 'appointment',

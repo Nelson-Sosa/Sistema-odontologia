@@ -71,7 +71,7 @@ function BookingPage() {
     [services, selectedServiceId]
   )
 
-  const paymentEnabled = !!paymentSettings?.enabled
+  const paymentEnabled = Boolean(features?.payments && paymentSettings?.enabled)
 
   const depositAmount = useMemo(() => {
     if (!selectedService || !paymentEnabled) return 0
@@ -252,8 +252,8 @@ function BookingPage() {
       setStep(STEPS.SUCCESS)
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } catch (err) {
-      console.error('[booking] error al crear turno:', err)
-      toast.error('No se pudo reservar el turno. Intentá de nuevo.')
+      console.error('[booking] error al crear cita:', err)
+      toast.error('No se pudo reservar la cita. Intentá de nuevo.')
     } finally {
       setSubmitting(false)
     }
@@ -364,7 +364,9 @@ function BookingPage() {
                     <p className="font-medium text-brand-text">{svc.name}</p>
                     <p className="mt-0.5 text-xs text-brand-text-muted">{svc.duration} min</p>
                   </div>
-                  <p className="font-semibold text-emerald-400">{formatCurrency(svc.price)}</p>
+                  {features?.showPrices !== false && (
+                    <p className="font-semibold text-emerald-400">{formatCurrency(svc.price)}</p>
+                  )}
                 </button>
               ))}
               {selectedCategoryId && servicesByCategory.length === 0 && (
@@ -386,7 +388,7 @@ function BookingPage() {
               <div>
                 <p className="text-sm font-medium text-brand-text">{selectedService.name}</p>
                 <p className="text-xs text-brand-text-muted">
-                  {formatCurrency(selectedService.price)} · {selectedService.duration} min
+                  {features?.showPrices !== false ? `${formatCurrency(selectedService.price)} · ` : ''}{selectedService.duration} min
                 </p>
               </div>
             </div>
@@ -497,17 +499,17 @@ function BookingPage() {
           </div>
 
           <h2 className="mt-4 text-xl sm:text-2xl font-bold text-brand-text">
-            ¡Tu turno fue solicitado correctamente!
+            ¡Tu cita fue solicitada correctamente!
           </h2>
 
           {paymentEnabled ? (
             <p className="mt-2 text-sm text-brand-text-muted max-w-md">
-              Recibimos tu comprobante de seña. Está en revisión y te confirmaremos tu turno
-              apenas sea aprobado.
+              Recibimos tu comprobante de seña. Está en revisión y te confirmaremos tu cita
+              apenas sea aprobada.
             </p>
           ) : (
             <p className="mt-2 text-sm text-brand-text-muted max-w-md">
-              Tu turno quedó agendado. Te esperamos.
+              Tu cita quedó agendada. Te esperamos en la clínica.
             </p>
           )}
 
@@ -523,8 +525,8 @@ function BookingPage() {
             <div className="mt-6 w-full max-w-sm rounded-xl border border-brand-border bg-brand-card p-4 text-left">
               <p className="text-sm font-semibold text-brand-text">¿Querés llevar tu historial con vos?</p>
               <p className="mt-1 text-xs text-brand-text-muted">
-                Creá una cuenta gratis para guardar tu historial, consultar próximos turnos y
-                acceder a beneficios de fidelidad.
+                Creá una cuenta gratis para guardar tu historial, consultar próximas citas y
+                acceder a novedades y promociones.
               </p>
               <Button
                 className="mt-3 w-full"
@@ -549,7 +551,7 @@ function BookingPage() {
             </Button>
             {isAuthenticated && (
               <Button onClick={() => navigate(ROUTES.APPOINTMENTS)}>
-                Ver mis turnos
+                Ver mis citas
               </Button>
             )}
           </div>

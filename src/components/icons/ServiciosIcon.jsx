@@ -1,8 +1,8 @@
-import { Scissors } from 'lucide-react'
+import { ToothIcon } from './ToothIcon'
 
-/* Servicios — lucide Scissors glyph, consistent with the nav set. */
+/* Tratamientos — ToothIcon glyph */
 export function ServiciosIcon(props) {
-  return <Scissors {...props} aria-hidden="true" />
+  return <ToothIcon {...props} aria-hidden="true" />
 }
 
 export default ServiciosIcon

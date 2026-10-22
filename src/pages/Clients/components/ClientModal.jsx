@@ -56,10 +56,10 @@ function ClientModal({ isOpen, onClose, client }) {
 
       if (client) {
         await updateClient({ id: client.id, data: payload })
-        toast.success('Cliente actualizado')
+        toast.success('Paciente actualizado')
       } else {
         await createClient(payload)
-        toast.success('Cliente creado')
+        toast.success('Paciente creado')
       }
       onClose()
       reset()
@@ -74,7 +74,7 @@ function ClientModal({ isOpen, onClose, client }) {
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={client ? 'Editar Cliente' : 'Nuevo Cliente'}
+      title={client ? 'Editar Paciente' : 'Nuevo Paciente'}
       maxWidthClass="max-w-md"
       footer={
         <FormActions>

@@ -1,4 +1,5 @@
-import { Bell, CheckCheck, Scissors, UserPlus, CalendarX, CalendarPlus, CalendarSync, Inbox } from 'lucide-react'
+import { Bell, CheckCheck, UserPlus, CalendarX, CalendarPlus, CalendarSync, Inbox } from 'lucide-react'
+import { ToothIcon } from '@/components/icons/ToothIcon'
 import { formatDistanceToNow } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { useNotifications, useMarkAsRead, useMarkAllAsRead } from '@/hooks/useNotifications'
@@ -10,7 +11,7 @@ const TYPE_ICONS = {
   [NOTIFICATION_TYPES.APPOINTMENT_UPDATED]: CalendarSync,
   [NOTIFICATION_TYPES.APPOINTMENT_CANCELLED]: CalendarX,
   [NOTIFICATION_TYPES.CLIENT_CREATED]: UserPlus,
-  [NOTIFICATION_TYPES.SERVICE_CREATED]: Scissors,
+  [NOTIFICATION_TYPES.SERVICE_CREATED]: ToothIcon,
   [NOTIFICATION_TYPES.SYSTEM]: Bell,
 }
 

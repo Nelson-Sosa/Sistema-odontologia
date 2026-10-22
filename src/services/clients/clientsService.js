@@ -267,7 +267,7 @@ export async function createClient(data) {
   const ref = await addDoc(clientsRef(), payload)
 
   createNotification({
-    title: 'Nuevo cliente',
+    title: 'Nuevo paciente',
     message: `Se registró ${payload.name}`,
     type: NOTIFICATION_TYPES.CLIENT_CREATED,
     entityId: ref.id,

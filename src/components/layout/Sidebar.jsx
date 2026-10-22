@@ -100,7 +100,7 @@ function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, onMobileClose })
                       cn(
                         'group relative flex items-center gap-3 rounded-lg px-3 py-2.5 min-h-[44px]',
                         'text-sm font-medium transition-all duration-200',
-                        'focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold/50',
+                        'focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/50',
                         isActive
                           ? 'bg-brand-alt-row text-brand-primary'
                           : 'text-brand-text-muted hover:bg-brand-alt-row/70 hover:text-brand-text',
@@ -110,10 +110,10 @@ function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, onMobileClose })
                   >
                     {({ isActive }) => (
                       <>
-                        {/* Active indicator — vertical gold bar */}
+                        {/* Active indicator — vertical primary bar */}
                         {isActive && (
                           <span
-                            className="absolute left-0 top-1/2 h-6 w-[3px] -translate-y-1/2 rounded-r-full bg-brand-gold"
+                            className="absolute left-0 top-1/2 h-6 w-[3px] -translate-y-1/2 rounded-r-full bg-brand-primary"
                             aria-hidden="true"
                           />
                         )}
@@ -152,7 +152,7 @@ function Sidebar({ isCollapsed, onToggleCollapse, isMobileOpen, onMobileClose })
                 'flex w-full items-center rounded-lg px-3 py-2 min-h-[44px]',
                 'text-sm text-brand-text-muted transition-colors duration-200',
                 'hover:bg-brand-alt-row/70 hover:text-brand-text',
-                'focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold/50',
+                'focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/50',
                 isCollapsed ? 'justify-center' : 'gap-3'
               )}
             >

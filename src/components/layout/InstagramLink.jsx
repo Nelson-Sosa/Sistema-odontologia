@@ -31,7 +31,7 @@ function InstagramLink({ isCollapsed, onMobileClose }) {
       className={cn(
         'group relative flex items-center rounded-lg px-3 py-2.5 min-h-[44px]',
         'text-sm font-medium transition-all duration-200',
-        'focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold/50',
+        'focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/50',
         'text-brand-text-muted hover:bg-brand-alt-row/70 hover:text-brand-text',
         isCollapsed ? 'justify-center px-2' : 'gap-3'
       )}

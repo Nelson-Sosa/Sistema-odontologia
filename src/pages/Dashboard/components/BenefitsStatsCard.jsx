@@ -43,7 +43,7 @@ function BenefitsStatsCard() {
           </div>
           <button
             onClick={() => navigate(ROUTES.SETTINGS)}
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-brand-primary transition-colors hover:text-brand-gold"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-brand-primary transition-colors hover:text-brand-accent"
           >
             <Settings className="h-3.5 w-3.5" />
             Configurar el programa
@@ -70,7 +70,7 @@ function BenefitsStatsCard() {
         action={
           <button
             onClick={() => navigate(ROUTES.CLIENTS)}
-            className="text-xs font-medium text-brand-primary transition-colors hover:text-brand-gold"
+            className="text-xs font-medium text-brand-primary transition-colors hover:text-brand-accent"
           >
             Ver &rarr;
           </button>
@@ -94,7 +94,7 @@ function BenefitsStatsCard() {
         {/* ── Top clients by visits ────────────────────────────────────── */}
         <div>
           <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-brand-text-muted">
-            Clientes con más visitas
+            Pacientes con más visitas
           </p>
           {stats.topVisits?.length > 0 ? (
             <div className="flex flex-col gap-1.5">
@@ -108,7 +108,7 @@ function BenefitsStatsCard() {
                     <span
                       className={cn(
                         'flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-[11px] font-semibold text-white',
-                        i === 0 ? 'bg-brand-gold' : 'bg-brand-primary'
+                        i === 0 ? 'bg-brand-accent' : 'bg-brand-primary'
                       )}
                     >
                       {initial}

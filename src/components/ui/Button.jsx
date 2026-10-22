@@ -8,8 +8,10 @@ import Spinner from '@/components/ui/Spinner'
 const variantClasses = {
   primary:
     'bg-brand-primary text-white hover:bg-brand-primary-hover active:bg-brand-primary-hover shadow-sm shadow-brand-primary/10',
+  accent:
+    'bg-brand-accent text-white hover:bg-emerald-600 active:bg-emerald-700 shadow-sm shadow-brand-accent/20',
   gold:
-    'bg-brand-gold text-white hover:bg-[#b28c1f] active:bg-[#9c7a1b] shadow-sm shadow-brand-gold/20',
+    'bg-brand-accent text-white hover:bg-emerald-600 active:bg-emerald-700 shadow-sm shadow-brand-accent/20',
   secondary:
     'bg-brand-card text-brand-text hover:bg-brand-alt-row active:bg-brand-alt-row border border-brand-border',
   outline:
@@ -78,7 +80,7 @@ const Button = forwardRef(function Button(
         // Base styles
         'inline-flex items-center justify-center rounded-lg font-medium',
         'transition-all duration-200 ease-in-out',
-        'focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold/60 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg',
+        'focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg',
         'disabled:pointer-events-none disabled:opacity-50',
         // Variants & sizes
         variantClasses[variant],

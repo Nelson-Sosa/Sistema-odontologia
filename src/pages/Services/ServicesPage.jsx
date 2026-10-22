@@ -5,7 +5,6 @@ import { usePageTitle } from '@/hooks/usePageTitle'
 import { useAuth } from '@/hooks/useAuth'
 import { useServices, useAllServices, useDeleteService } from '@/hooks/useServices'
 import { useCategories } from '@/hooks/useServiceCategories'
-import { useFeatures } from '@/hooks/useFeatures'
 import { ToothIcon } from '@/components/icons/ToothIcon'
 import { ROUTES } from '@/routes/routes'
 import { USER_ROLES } from '@/constants/app'
@@ -21,7 +20,6 @@ import { cn } from '@/utils/cn'
 function ServicesPage() {
   usePageTitle('Tratamientos')
   const navigate = useNavigate()
-  const features = useFeatures()
 
   const { role } = useAuth()
   const isAdmin = role === USER_ROLES.ADMIN
@@ -35,7 +33,9 @@ function ServicesPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState('all')
 
-  const { data: rawServices, isLoading } = isAdmin ? useAllServices() : useServices()
+  const allServicesQuery = useAllServices()
+  const activeServicesQuery = useServices()
+  const { data: rawServices, isLoading } = isAdmin ? allServicesQuery : activeServicesQuery
   const { data: categories } = useCategories()
   const { mutateAsync: deleteService, isPending: isDeleting } = useDeleteService()
 
@@ -198,7 +198,7 @@ function ServicesPage() {
             </div>
             <input
               type="text"
-              className="h-10 w-full rounded-xl border border-brand-border bg-brand-card pl-10 pr-10 text-sm text-brand-text placeholder:text-brand-text-muted transition-all focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-gold/30"
+              className="h-10 w-full rounded-xl border border-brand-border bg-brand-card pl-10 pr-10 text-sm text-brand-text placeholder:text-brand-text-muted transition-all focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/30"
               placeholder="Buscar por nombre, descripción o categoría..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}

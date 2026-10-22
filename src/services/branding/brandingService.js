@@ -12,7 +12,7 @@ const BRANDING_DOC_PATH = 'settings/branding';
  * Valores por defecto del branding
  */
 export const DEFAULT_BRANDING = {
-  businessName: 'Clínica Dental',
+  businessName: 'Gestión de Clínica Dental',
   tagline: 'Tu salud dental es nuestra prioridad',
   logoUrl: '',
   phone: '',
@@ -31,7 +31,7 @@ export const DEFAULT_BRANDING = {
  */
 export const DEFAULT_FEATURES = {
   payments: false,           // Oculta sistema de señas/depósitos/pagos
-  showPrices: false,         // Oculta precios en catálogo y reserva
+  showPrices: true,          // Muestra precios en catálogo y reserva
   benefits: false,           // Oculta programa de fidelización/puntos
   advancedReports: false,    // Muestra solo resumen simple (hoy, pendientes, próximos)
   autoConfirm: true          // Si payments=false, confirma automáticamente las citas

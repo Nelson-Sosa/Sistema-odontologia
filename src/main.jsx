@@ -33,9 +33,9 @@ createRoot(document.getElementById('root')).render(
           toastOptions={{
             duration: 4000,
             style: {
-              background: '#161616',
-              color: '#f7f7f7',
-              border: '1px solid #2A2A2A',
+              background: '#0F172A',
+              color: '#F8FAFC',
+              border: '1px solid #1E293B',
               borderRadius: '12px',
               fontSize: '14px',
               padding: '12px 16px',

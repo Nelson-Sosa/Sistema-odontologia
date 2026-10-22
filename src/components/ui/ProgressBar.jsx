@@ -21,7 +21,7 @@ function ProgressBar({ value = 0, max = 100, className, barClassName }) {
     >
       <div
         className={cn(
-          'h-full rounded-full bg-gradient-to-r from-brand-primary to-brand-gold transition-all duration-700 ease-out',
+          'h-full rounded-full bg-gradient-to-r from-brand-primary to-brand-accent transition-all duration-700 ease-out',
           barClassName
         )}
         style={{ width: `${width}%` }}

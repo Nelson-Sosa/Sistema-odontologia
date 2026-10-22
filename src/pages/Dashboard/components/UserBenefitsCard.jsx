@@ -9,14 +9,14 @@ function UserBenefitsCard() {
 
   const BENEFITS = [
     { icon: Gift, text: `Programa de beneficios con ${rewardLabel} cada ${rewardEvery} visitas.` },
-    { icon: History, text: 'Historial completo de servicios y visitas.' },
+    { icon: History, text: 'Historial completo de tratamientos y citas.' },
     { icon: Calendar, text: 'Reservas online 24/7 desde cualquier dispositivo.' },
   ]
 
   return (
       <div className="rounded-2xl border border-brand-border bg-brand-card p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_32px_-16px_rgba(0,0,0,0.18)]">
       <div className="flex items-center gap-3 mb-5">
-        <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-brand-border bg-brand-alt-row text-brand-gold">
+        <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-brand-border bg-brand-alt-row text-brand-accent">
           <Gem className="h-5 w-5" />
         </span>
         <div>

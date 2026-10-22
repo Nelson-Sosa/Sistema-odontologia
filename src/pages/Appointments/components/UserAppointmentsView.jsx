@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { CalendarDays, Plus, Phone, Upload, ExternalLink } from 'lucide-react'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useAppointmentsByClient, useCancelAppointment, useReplacePaymentProof } from '@/hooks/useAppointments'
 import { useServices } from '@/hooks/useServices'
 import { useAuth } from '@/context/AuthContext'
+import { useFeatures } from '@/hooks/useFeatures'
 import { ROUTES } from '@/routes/routes'
 import { APPOINTMENT_STATUS, PAYMENT_STATUS } from '@/constants/app'
 import { formatCurrency } from '@/utils/formatters'
@@ -18,6 +19,7 @@ import PaymentProofUploader from './PaymentProofUploader'
 
 export default function UserAppointmentsView() {
   const { userProfile, user } = useAuth()
+  const features = useFeatures()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -39,8 +41,8 @@ export default function UserAppointmentsView() {
 
   const handleCancel = (appointmentId) => {
     cancelAppointment(appointmentId, {
-      onSuccess: () => toast.success('Turno cancelado correctamente'),
-      onError: () => toast.error('No se pudo cancelar el turno'),
+      onSuccess: () => toast.success('Cita cancelada correctamente'),
+      onError: () => toast.error('No se pudo cancelar la cita'),
     })
   }
 
@@ -109,7 +111,7 @@ export default function UserAppointmentsView() {
           <div className="flex items-start sm:items-center gap-3">
             <Phone className="h-5 w-5 flex-shrink-0 text-amber-400 mt-0.5 sm:mt-0" />
             <p className="text-sm text-amber-300">
-              <strong>Completá tu número de teléfono</strong> para recibir recordatorios de tus turnos por WhatsApp.
+              <strong>Completá tu número de teléfono</strong> para recibir recordatorios de tus citas por WhatsApp.
             </p>
           </div>
           <Button
@@ -126,13 +128,13 @@ export default function UserAppointmentsView() {
       {/* ── Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-brand-text">Mis Turnos</h1>
+          <h1 className="text-2xl font-bold text-brand-text">Mis Citas</h1>
           <p className="mt-1 text-sm text-brand-text-muted">
-            Revisá tu historial y próximos turnos agendados.
+            Revisá tu historial y próximas citas agendadas.
           </p>
         </div>
         <Button leftIcon={<Plus className="h-4 w-4" />} onClick={handleOpenModal}>
-          Reservar Turno
+          Solicitar Cita
         </Button>
       </div>
 
@@ -172,13 +174,17 @@ export default function UserAppointmentsView() {
                     </span>
                     <span className="flex items-center gap-1.5">
                       <span className="font-mono text-brand-text">{appointment.time} hs</span>
-                      <span>•</span>
-                      <span>{formatCurrency(servicePriceMap[appointment.serviceId] ?? appointment.price)}</span>
+                      {features?.showPrices !== false && (
+                        <>
+                          <span>•</span>
+                          <span>{formatCurrency(servicePriceMap[appointment.serviceId] ?? appointment.price)}</span>
+                        </>
+                      )}
                     </span>
                   </div>
 
                   {/* Payment badge — independent of appointment status */}
-                  {pmt?.enabled && (
+                  {pmt?.enabled && features?.payments !== false && (
                     <div className="mt-3 flex flex-wrap items-center gap-2">
                       {getPaymentBadge(pmt)}
                       {pmt.amount > 0 && (
@@ -202,7 +208,7 @@ export default function UserAppointmentsView() {
                   )}
 
                   {/* Rejection reason + replace proof */}
-                  {isRejected && (
+                  {isRejected && features?.payments !== false && (
                     <div className="mt-3 rounded-lg border border-red-500/20 bg-red-500/5 p-3">
                       <p className="text-xs font-medium text-red-500 mb-1">Comprobante rechazado</p>
                       {pmt.rejectionReason && (
@@ -243,7 +249,7 @@ export default function UserAppointmentsView() {
                         disabled={isCancelling}
                         className="text-xs font-medium text-brand-primary hover:text-brand-primary-hover disabled:opacity-50 transition-colors"
                       >
-                        {isCancelling ? 'Cancelando...' : 'Cancelar turno'}
+                        {isCancelling ? 'Cancelando...' : 'Cancelar cita'}
                       </button>
                     </div>
                   )}
@@ -254,10 +260,10 @@ export default function UserAppointmentsView() {
         ) : (
           <div className="flex h-64 flex-col items-center justify-center rounded-xl border border-dashed border-brand-border bg-brand-bg">
             <CalendarDays className="mb-3 h-10 w-10 text-brand-text-muted" />
-            <p className="text-lg font-medium text-brand-text">Aún no tenés turnos</p>
-            <p className="mt-1 text-sm text-brand-text-muted">Explorá nuestros servicios y reservá tu primer turno.</p>
+            <p className="text-lg font-medium text-brand-text">Aún no tenés citas</p>
+            <p className="mt-1 text-sm text-brand-text-muted">Explorá nuestros tratamientos y solicitá tu primera cita.</p>
             <Button className="mt-4" variant="secondary" onClick={handleOpenModal}>
-              Reservar Turno
+              Solicitar Cita
             </Button>
           </div>
         )}

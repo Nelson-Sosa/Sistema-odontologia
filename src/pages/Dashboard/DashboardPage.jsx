@@ -4,6 +4,7 @@ import BenefitsStatsCard from './components/BenefitsStatsCard'
 import { useAuth } from '@/hooks/useAuth'
 import { usePageTitle } from '@/hooks/usePageTitle'
 import { useDashboardStats } from '@/hooks/useDashboardStats'
+import { useFeatures } from '@/hooks/useFeatures'
 import Card from '@/components/ui/Card'
 import Badge from '@/components/ui/Badge'
 import Spinner from '@/components/ui/Spinner'
@@ -20,6 +21,7 @@ function DashboardPage() {
   usePageTitle('Dashboard')
 
   const { user, userProfile } = useAuth()
+  const features = useFeatures()
   const { data: stats, isLoading } = useDashboardStats()
 
   const displayName = userProfile?.displayName || user?.displayName || 'Bienvenido'
@@ -41,8 +43,8 @@ function DashboardPage() {
   }
 
   const metrics = [
-    { icon: CalendarDays, value: stats?.todayAppointmentsCount ?? 0, label: 'Turnos hoy' },
-    { icon: Users, value: stats?.totalClients ?? 0, label: 'Clientes totales' },
+    { icon: CalendarDays, value: stats?.todayAppointmentsCount ?? 0, label: 'Citas de hoy' },
+    { icon: Users, value: stats?.totalClients ?? 0, label: 'Pacientes totales' },
     { icon: TrendingUp, value: formatCurrency(stats?.todayIncome ?? 0), label: 'Ingresos hoy' },
     { icon: Landmark, value: formatCurrency(stats?.monthIncome ?? 0), label: 'Ingresos del mes' },
   ]
@@ -63,7 +65,7 @@ function DashboardPage() {
           </p>
         </div>
         <div className="flex items-center gap-2 self-start rounded-full border border-brand-border bg-brand-card px-4 py-2 text-xs text-brand-text-muted">
-          <span className="h-1.5 w-1.5 rounded-full bg-brand-gold" />
+          <span className="h-1.5 w-1.5 rounded-full bg-brand-accent" />
           En vivo
         </div>
       </div>
@@ -94,7 +96,7 @@ function DashboardPage() {
           <Card>
             <Card.Header
               title="Agenda de Hoy"
-              description="Tus turnos agendados para el día de hoy"
+              description="Tus citas agendadas para el día de hoy"
               action={
                 <Link to={ROUTES.APPOINTMENTS} className="text-sm font-medium text-brand-primary transition-colors hover:text-brand-primary-hover">
                   Ver todos &rarr;
@@ -105,7 +107,7 @@ function DashboardPage() {
               {stats?.todayAppointmentsList?.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-12 text-center">
                   <CalendarDays className="mb-3 h-8 w-8 text-brand-text-muted" />
-                  <p className="text-sm text-brand-text-muted">No hay turnos agendados para hoy.</p>
+                  <p className="text-sm text-brand-text-muted">No hay citas agendadas para hoy.</p>
                 </div>
               ) : (
                 stats?.todayAppointmentsList?.slice(0, 5).map((app) => {
@@ -152,14 +154,16 @@ function DashboardPage() {
         <div className="flex flex-col gap-6">
 
           {/* ── Programa de Beneficios ──────────────────────────────────── */}
-          <BenefitsCard />
+          {features?.benefits && (
+            <>
+              <BenefitsCard />
+              <BenefitsStatsCard />
+            </>
+          )}
 
-          {/* ── Estadísticas de Beneficios ──────────────────────────────── */}
-          <BenefitsStatsCard />
-
-          {/* ── Próximo Turno ───────────────────────────────────────────── */}
+          {/* ── Próxima Cita ───────────────────────────────────────────── */}
           <Card>
-            <Card.Header title="Pr&oacute;ximo Turno" />
+            <Card.Header title="Pr&oacute;xima Cita" />
             <Card.Body>
               {stats?.nextAppointment ? (
                 <div className="space-y-4">
@@ -176,7 +180,7 @@ function DashboardPage() {
                   </div>
                   <div className="rounded-xl border border-brand-border bg-brand-alt-row/60 px-4 py-3">
                     <div className="flex items-center justify-between gap-3 text-sm">
-                      <span className="shrink-0 text-brand-text-muted">Servicio</span>
+                      <span className="shrink-0 text-brand-text-muted">Tratamiento</span>
                       <span className="min-w-0 truncate text-right font-medium text-brand-text">{stats.nextAppointment.serviceName}</span>
                     </div>
                   </div>
@@ -184,22 +188,22 @@ function DashboardPage() {
                     to={ROUTES.APPOINTMENTS}
                     className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-brand-border py-2.5 text-sm font-medium text-brand-text transition-all duration-200 hover:border-brand-primary/40 hover:text-brand-primary"
                   >
-                    Ver turno
+                    Ver cita
                     <ChevronRight className="h-3.5 w-3.5" />
                   </Link>
                 </div>
               ) : (
                 <div className="flex flex-col items-center justify-center py-8 text-center">
                   <Clock className="mb-3 h-8 w-8 text-brand-text-muted" />
-                  <p className="text-sm text-brand-text-muted">No hay pr&oacute;ximos turnos.</p>
+                  <p className="text-sm text-brand-text-muted">No hay pr&oacute;ximas citas.</p>
                 </div>
               )}
             </Card.Body>
           </Card>
 
-          {/* ── Servicios más vendidos ──────────────────────────────────── */}
+          {/* ── Tratamientos más realizados ─────────────────────────────── */}
           <Card>
-            <Card.Header title="Servicios m&aacute;s vendidos" />
+            <Card.Header title="Tratamientos m&aacute;s realizados" />
             <Card.Body className="space-y-4">
               {stats?.topServices?.length > 0 ? (
                 stats.topServices.map((svc) => {
@@ -208,11 +212,11 @@ function DashboardPage() {
                     <div key={svc.name}>
                       <div className="mb-1.5 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
                         <span className="min-w-0 break-words text-sm font-medium text-brand-text sm:break-normal">{svc.name}</span>
-                        <span className={cn('shrink-0 self-end text-xs text-brand-text-muted sm:self-auto')}>{pct}% &middot; {svc.count} turnos</span>
+                        <span className={cn('shrink-0 self-end text-xs text-brand-text-muted sm:self-auto')}>{pct}% &middot; {svc.count} citas</span>
                       </div>
                       <div className="h-2 overflow-hidden rounded-full bg-brand-alt-row">
                         <div
-                          className="h-full rounded-full bg-gradient-to-r from-brand-primary to-brand-gold transition-all duration-500"
+                          className="h-full rounded-full bg-gradient-to-r from-brand-primary to-brand-accent transition-all duration-500"
                           style={{ width: `${pct}%` }}
                         />
                       </div>
@@ -221,7 +225,7 @@ function DashboardPage() {
                 })
               ) : (
                 <div className="py-6 text-center text-sm text-brand-text-muted">
-                  Sin servicios este mes.
+                  Sin tratamientos este mes.
                 </div>
               )}
             </Card.Body>

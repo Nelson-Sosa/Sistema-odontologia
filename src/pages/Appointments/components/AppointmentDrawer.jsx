@@ -1,5 +1,6 @@
-﻿import { useState } from 'react'
-import { X, Clock, Calendar, Scissors, Banknote, CheckCircle, XCircle, ExternalLink, UserRound, UserCheck, Phone } from 'lucide-react'
+import { useState } from 'react'
+import { X, Clock, Calendar, Banknote, CheckCircle, XCircle, ExternalLink, UserRound, UserCheck, Phone } from 'lucide-react'
+import { ToothIcon } from '@/components/icons/ToothIcon'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import toast from 'react-hot-toast'
@@ -150,7 +151,7 @@ export default function AppointmentDrawer({ appointment, isOpen, onClose, onEdit
           {/* Status selector */}
           <div>
             <label className="block text-xs font-medium text-brand-text-muted uppercase tracking-wider mb-1.5">
-              Estado del turno
+              Estado de la cita
             </label>
             <select
               value={appointment.status}
@@ -167,7 +168,7 @@ export default function AppointmentDrawer({ appointment, isOpen, onClose, onEdit
 
           {/* Service */}
           <div className="flex items-start gap-3">
-            <Scissors className="h-4 w-4 mt-0.5 text-brand-text-muted shrink-0" />
+            <ToothIcon className="h-4 w-4 mt-0.5 text-brand-primary shrink-0" />
             <div>
               <p className="text-sm font-medium text-brand-text">{appointment.serviceName}</p>
               <p className="text-xs text-brand-text-muted mt-px">Duración: {formatDuration(safeDuration)}</p>

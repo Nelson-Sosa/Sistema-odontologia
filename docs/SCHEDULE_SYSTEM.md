@@ -4,7 +4,7 @@ El sistema de agendamiento y reserva utiliza una configuración dinámica desde 
 
 ## Arquitectura de Datos
 
-La configuración del salón se almacena en Firebase Firestore.
+La configuración de la clínica se almacena en Firebase Firestore.
 - **Colección:** `settings`
 - **Documento:** `business`
 - **Estructura (Ejemplo):**

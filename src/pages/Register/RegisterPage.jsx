@@ -78,9 +78,9 @@ function RegisterPage() {
       {/* ── Branding Panel ──────────────────────────────────── */}
       <div className="relative flex w-full flex-col items-center justify-center overflow-hidden py-12 lg:w-1/2 lg:py-0">
         <div className="absolute inset-0 bg-gradient-to-br from-brand-alt-row via-brand-bg to-brand-bg" />
-        <div className="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-brand-gold/10 blur-3xl" />
+        <div className="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-brand-primary/10 blur-3xl" />
         <div className="absolute -bottom-32 -right-32 h-96 w-96 rounded-full bg-brand-primary/5 blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-gold/5 blur-2xl" />
+        <div className="absolute top-1/2 left-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-accent/10 blur-2xl" />
 
         <div
           className="relative z-10 flex flex-col items-center justify-center gap-3 transition-transform duration-300 hover:scale-[1.02] md:gap-4"

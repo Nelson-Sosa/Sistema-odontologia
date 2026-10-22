@@ -40,9 +40,9 @@ export default function AdminAgendaView() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap items-center gap-4">
           <div className="min-w-0 flex-1">
-            <h1 className="text-2xl font-bold text-brand-text">Agenda de Turnos</h1>
+            <h1 className="text-2xl font-bold text-brand-text">Agenda de Citas</h1>
             <p className="mt-1 text-sm text-brand-text-muted">
-              Gestioná los turnos del día y actualizá sus estados.
+              Gestioná las citas del día y actualizá sus estados.
             </p>
           </div>
           <div className="flex shrink-0 rounded-lg border border-brand-border bg-brand-card p-0.5">
@@ -79,7 +79,7 @@ export default function AdminAgendaView() {
             setIsModalOpen(true)
           }}
         >
-          Nuevo Turno
+          Nueva Cita
         </Button>
       </div>
 
@@ -91,7 +91,7 @@ export default function AdminAgendaView() {
           <span className="text-sm sm:text-lg font-bold capitalize text-white truncate max-w-full">
             {format(selectedDate, "EEEE d 'de' MMMM", { locale: es })}
           </span>
-          <button onClick={handleToday} className="text-xs text-brand-gold hover:underline whitespace-nowrap">
+          <button onClick={handleToday} className="text-xs text-brand-accent hover:underline whitespace-nowrap">
             Ir a Hoy
           </button>
         </div>
@@ -122,7 +122,7 @@ export default function AdminAgendaView() {
           <div className="flex h-64 flex-col items-center justify-center rounded-xl border border-dashed border-brand-border bg-brand-card">
             <CalendarDays className="mb-3 h-10 w-10 text-brand-text-muted" />
             <p className="text-lg font-medium text-brand-text">Agenda libre</p>
-            <p className="text-sm text-brand-text-muted">No hay turnos programados para este día.</p>
+            <p className="text-sm text-brand-text-muted">No hay citas programadas para este día.</p>
           </div>
         )}
       </div>

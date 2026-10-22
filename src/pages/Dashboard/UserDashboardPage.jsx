@@ -1,12 +1,14 @@
 import { useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { CalendarDays, Clock, ArrowRight, AlertCircle, Scissors } from 'lucide-react'
+import { CalendarDays, Clock, ArrowRight, AlertCircle } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { useAppointmentsByClient } from '@/hooks/useAppointments'
 import { usePageTitle } from '@/hooks/usePageTitle'
+import { useFeatures } from '@/hooks/useFeatures'
 import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/routes/routes'
 import { STATUS_CONFIG } from '@/constants/app'
+import { ToothIcon } from '@/components/icons/ToothIcon'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import Badge from '@/components/ui/Badge'
@@ -25,6 +27,7 @@ function UserDashboardPage() {
   usePageTitle('Mi Dashboard')
 
   const { user, userProfile, role } = useAuth()
+  const features = useFeatures()
   const navigate = useNavigate()
   const clientId = userProfile?.uid || user?.uid
   const { data: appointments } = useAppointmentsByClient(clientId)
@@ -52,13 +55,13 @@ function UserDashboardPage() {
         <p className="mt-1 text-sm text-brand-text-muted">
           {totalVisits === 0
             ? 'Comienza tu experiencia en nuestra clínica.'
-            : `Tienes ${totalVisits} visita${totalVisits !== 1 ? 's' : ''} completada${totalVisits !== 1 ? 's' : ''}.`
+            : `Tienes ${totalVisits} consulta${totalVisits !== 1 ? 's' : ''} completada${totalVisits !== 1 ? 's' : ''}.`
           }
         </p>
       </div>
 
-      {/* ── Mis Beneficios (solo usuarios) ── */}
-      {role === 'user' && <MisBeneficiosCard totalVisits={totalVisits} />}
+      {/* ── Mis Beneficios (solo si está activo el feature flag) ── */}
+      {role === 'user' && features.benefits && <MisBeneficiosCard totalVisits={totalVisits} />}
 
       {/* ── Welcome Card (no visits) ── */}
       {totalVisits === 0 && (
@@ -68,19 +71,19 @@ function UserDashboardPage() {
           className="rounded-2xl border border-brand-border bg-brand-card p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_32px_-16px_rgba(0,0,0,0.18)]"
         >
           <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-brand-primary text-brand-gold">
-              <Scissors className="h-6 w-6" />
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-brand-primary text-white">
+              <ToothIcon className="h-6 w-6" />
             </span>
             <div className="flex-1">
               <p className="text-base font-semibold text-brand-text">Bienvenido a la clínica</p>
               <p className="mt-1 text-sm text-brand-text-muted leading-relaxed">
-                Reserva tu primer turno y comienza a disfrutar de todos los beneficios.
+                Solicitá tu primera cita y comenzá a cuidar tu salud dental con nuestros profesionales.
               </p>
               <button
                 onClick={() => navigate(ROUTES.APPOINTMENTS)}
                 className="mt-4 inline-flex items-center gap-2 rounded-xl bg-brand-primary px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:bg-brand-primary-hover active:scale-[0.97]"
               >
-                Reservar turno
+                Solicitar cita
                 <ArrowRight className="h-4 w-4" />
               </button>
             </div>
@@ -101,8 +104,8 @@ function UserDashboardPage() {
               <CalendarDays className="h-5 w-5" />
             </span>
             <div>
-              <p className="text-sm font-medium text-brand-text">Próximo turno</p>
-              <p className="text-xs text-brand-text-muted">{upcoming.serviceName || 'Sin servicio'}</p>
+              <p className="text-sm font-medium text-brand-text">Próxima cita</p>
+              <p className="text-xs text-brand-text-muted">{upcoming.serviceName || 'Sin tratamiento asignado'}</p>
             </div>
           </div>
 
@@ -123,9 +126,9 @@ function UserDashboardPage() {
 
           <button
             onClick={() => navigate(ROUTES.APPOINTMENTS)}
-            className="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-brand-primary hover:text-brand-gold transition-colors"
+            className="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-brand-primary hover:text-brand-primary-hover transition-colors"
           >
-            Ver mis turnos
+            Ver mis citas
             <ArrowRight className="h-3.5 w-3.5" />
           </button>
         </motion.div>
@@ -141,15 +144,15 @@ function UserDashboardPage() {
               <AlertCircle className="h-6 w-6" />
             </span>
             <div className="flex-1">
-              <p className="text-base font-semibold text-brand-text">No tienes turnos programados</p>
+              <p className="text-base font-semibold text-brand-text">No tienes citas programadas</p>
               <p className="mt-1 text-sm text-brand-text-muted leading-relaxed">
-                Es un excelente momento para reservar tu próxima cita.
+                Es un excelente momento para solicitar tu próximo control dental.
               </p>
               <button
                 onClick={() => navigate(ROUTES.APPOINTMENTS)}
                 className="mt-4 inline-flex items-center gap-2 rounded-xl bg-brand-primary px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:bg-brand-primary-hover active:scale-[0.97]"
               >
-                Reservar ahora
+                Solicitar cita
                 <ArrowRight className="h-4 w-4" />
               </button>
             </div>
@@ -157,8 +160,8 @@ function UserDashboardPage() {
         </motion.div>
       )}
 
-      {/* ── Benefits Card ── */}
-      <UserBenefitsCard />
+      {/* ── Benefits Card (condicionado a feature flag) ── */}
+      {features.benefits && <UserBenefitsCard />}
     </div>
   )
 }

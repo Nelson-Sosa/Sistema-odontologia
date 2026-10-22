@@ -173,8 +173,8 @@ function LoginPage() {
           <p className="max-w-sm text-sm font-medium leading-relaxed text-white/80 md:text-base">
             Gestioná tu clínica de forma simple y profesional.
           </p>
-          {/* Gold accent line */}
-          <div className="h-px w-16 bg-gradient-to-r from-transparent via-brand-gold to-transparent" />
+          {/* Accent line */}
+          <div className="h-px w-16 bg-gradient-to-r from-transparent via-brand-accent to-transparent" />
         </div>
       </aside>
 

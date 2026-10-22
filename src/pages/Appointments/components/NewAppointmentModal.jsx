@@ -23,8 +23,8 @@ import FormActions from '@/components/ui/FormActions'
 import { cn } from '@/utils/cn'
 
 const schema = z.object({
-  clientId: z.string().min(1, 'Seleccioná un cliente'),
-  serviceId: z.string().min(1, 'Seleccioná un servicio'),
+  clientId: z.string().min(1, 'Seleccioná un paciente'),
+  serviceId: z.string().min(1, 'Seleccioná un tratamiento'),
   date: z.string().min(1, 'Seleccioná una fecha'),
   time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, 'Hora inválida (HH:mm)')
 })
@@ -141,7 +141,7 @@ function NewAppointmentModal({ isOpen, onClose, initialDate, initialTime, appoin
             time: data.time,
           }
         })
-        toast.success('Turno actualizado')
+        toast.success('Cita actualizada')
       } else {
         await createAppointment({
           clientId: client.id,
@@ -154,11 +154,11 @@ function NewAppointmentModal({ isOpen, onClose, initialDate, initialTime, appoin
           date: appointmentDate,
           time: data.time,
         })
-        toast.success('Turno agendado')
+        toast.success('Cita agendada')
       }
       onClose()
     } catch (error) {
-      toast.error(isEditing ? 'No se pudo actualizar el turno' : 'No se pudo crear el turno')
+      toast.error(isEditing ? 'No se pudo actualizar la cita' : 'No se pudo crear la cita')
     }
   }
 
@@ -186,7 +186,7 @@ function NewAppointmentModal({ isOpen, onClose, initialDate, initialTime, appoin
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={isEditing ? 'Editar Turno' : 'Agendar Turno'}
+      title={isEditing ? 'Editar Cita' : 'Agendar Cita'}
       maxWidthClass="max-w-lg"
       footer={
         <FormActions>
@@ -202,7 +202,7 @@ function NewAppointmentModal({ isOpen, onClose, initialDate, initialTime, appoin
       <form id="appointment-form" onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         {/* Client Select */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-brand-text">Cliente</label>
+          <label className="text-sm font-medium text-brand-text">Paciente</label>
           <select
             className={cn(
               'h-10 w-full rounded-lg border bg-brand-bg px-3 text-sm text-brand-text',
@@ -212,18 +212,18 @@ function NewAppointmentModal({ isOpen, onClose, initialDate, initialTime, appoin
             disabled={loadingClients || isEditing}
             {...register('clientId')}
           >
-            <option value="">Seleccionar cliente...</option>
+            <option value="">Seleccionar paciente...</option>
             {clients?.map((c) => (
               <option key={c.id} value={c.id}>{c.name} {c.phone ? `(${c.phone})` : ''}</option>
             ))}
           </select>
           {errors.clientId && <p className="text-xs text-red-400">{errors.clientId.message}</p>}
-          {isEditing && <p className="text-xs text-brand-text-muted">El cliente no se puede modificar.</p>}
+          {isEditing && <p className="text-xs text-brand-text-muted">El paciente no se puede modificar.</p>}
         </div>
 
         {/* Service Select */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-brand-text">Servicio</label>
+          <label className="text-sm font-medium text-brand-text">Tratamiento</label>
           <select
             className={cn(
               'h-10 w-full rounded-lg border bg-brand-bg px-3 text-sm text-brand-text',
@@ -232,7 +232,7 @@ function NewAppointmentModal({ isOpen, onClose, initialDate, initialTime, appoin
             disabled={loadingServices}
             {...register('serviceId')}
           >
-            <option value="">Seleccionar servicio...</option>
+            <option value="">Seleccionar tratamiento...</option>
             {groupedServices?.length > 0 ? (
               groupedServices.map((cat) => (
                 <optgroup key={cat.id} label={cat.name}>
@@ -253,7 +253,7 @@ function NewAppointmentModal({ isOpen, onClose, initialDate, initialTime, appoin
 
         {/* Date Input */}
         <Input 
-          label="Fecha del turno" 
+          label="Fecha de la cita" 
           type="date" 
           min={role === USER_ROLES.ADMIN ? undefined : minDate}
           error={errors.date?.message}
@@ -266,7 +266,7 @@ function NewAppointmentModal({ isOpen, onClose, initialDate, initialTime, appoin
           control={control}
           render={({ field }) => (
             <TimeSelect
-              label="Hora del turno"
+              label="Hora de la cita"
               startHour={timeStartHour}
               endHour={timeEndHour}
               stepMinutes={businessSettings?.slotInterval || 30}

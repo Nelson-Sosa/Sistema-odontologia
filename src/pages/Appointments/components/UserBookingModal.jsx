@@ -9,6 +9,7 @@ import { useServices } from '@/hooks/useServices'
 import { useActiveCategories } from '@/hooks/useServiceCategories'
 import { useCreateAppointment } from '@/hooks/useAppointments'
 import { usePaymentSettings } from '@/hooks/usePaymentSettings'
+import { useFeatures } from '@/hooks/useFeatures'
 import { checkAppointmentConflict } from '@/services/appointments/appointmentsService'
 import { USER_ROLES, PAYMENT_PROVIDERS } from '@/constants/app'
 import { validateAppointmentDateTime } from '@/utils/dateValidation'
@@ -31,6 +32,7 @@ const STEPS = { CATEGORY: 0, SERVICE: 1, DETAILS: 2, PAYMENT: 3 }
 
 function UserBookingModal({ isOpen, onClose, defaultServiceId = null }) {
   const { userProfile, user, role } = useAuth()
+  const features = useFeatures()
   const { data: services, isLoading: loadingServices } = useServices()
   const { data: categories } = useActiveCategories()
   const { mutateAsync: createAppointment, isPending } = useCreateAppointment()
@@ -57,7 +59,7 @@ function UserBookingModal({ isOpen, onClose, defaultServiceId = null }) {
   }, [services, selectedServiceId])
 
   // Is payment (seña) required?
-  const paymentEnabled = !!paymentSettings?.enabled
+  const paymentEnabled = Boolean(features?.payments && paymentSettings?.enabled)
 
   // Calculate the deposit amount
   const depositAmount = useMemo(() => {
@@ -175,13 +177,13 @@ function UserBookingModal({ isOpen, onClose, defaultServiceId = null }) {
 
       toast.success(
         paymentEnabled
-          ? 'Turno enviado. Esperando aprobación del comprobante.'
-          : 'Turno agendado correctamente'
+          ? 'Cita enviada. Esperando aprobación del comprobante.'
+          : 'Cita agendada correctamente'
       )
       onClose()
       reset()
     } catch {
-      toast.error('No se pudo reservar el turno')
+      toast.error('No se pudo reservar la cita')
     }
   }
 
@@ -276,11 +278,11 @@ function UserBookingModal({ isOpen, onClose, defaultServiceId = null }) {
           </button>
 
           <h2 className="px-12 text-center text-lg font-bold text-brand-text sm:text-xl">
-            Reservar Turno
+            Solicitar Cita
           </h2>
           <p className="mt-1 px-2 text-center text-xs text-brand-text-muted sm:text-sm">
             {step === STEPS.PAYMENT
-              ? 'Realizá el pago de la seña para confirmar tu turno.'
+              ? 'Realizá el pago de la seña para confirmar tu cita.'
               : 'Podés agendar con hasta 2 horas de anticipación.'}
           </p>
         </div>
@@ -304,7 +306,7 @@ function UserBookingModal({ isOpen, onClose, defaultServiceId = null }) {
                 >
                   <p className="font-medium text-brand-text">{cat.name}</p>
                   <p className="mt-1 text-xs text-brand-text-muted">
-                    {services?.filter((s) => s.categoryId === cat.id && s.active !== false).length} servicios
+                    {services?.filter((s) => s.categoryId === cat.id && s.active !== false).length} tratamientos
                   </p>
                 </button>
               ))}
@@ -317,11 +319,11 @@ function UserBookingModal({ isOpen, onClose, defaultServiceId = null }) {
           <div className="space-y-3">
             <p className="text-sm font-medium text-brand-text">
               {selectedCategoryId
-                ? `Servicios de ${categories?.find((c) => c.id === selectedCategoryId)?.name || ''}`
-                : 'Seleccioná un servicio'}
+                ? `Tratamientos de ${categories?.find((c) => c.id === selectedCategoryId)?.name || ''}`
+                : 'Seleccioná un tratamiento'}
             </p>
             {loadingServices ? (
-              <p className="text-sm text-brand-text-muted">Cargando servicios...</p>
+              <p className="text-sm text-brand-text-muted">Cargando tratamientos...</p>
             ) : (
               <div className="space-y-2 max-h-64 overflow-y-auto">
                 {(selectedCategoryId ? servicesByCategory : services?.filter((s) => s.active !== false) || []).map((svc) => (
@@ -337,11 +339,13 @@ function UserBookingModal({ isOpen, onClose, defaultServiceId = null }) {
                       <p className="font-medium text-brand-text">{svc.name}</p>
                       <p className="mt-0.5 text-xs text-brand-text-muted">{svc.duration} min</p>
                     </div>
-                    <p className="font-semibold text-emerald-400">{formatCurrency(svc.price)}</p>
+                    {features?.showPrices !== false && (
+                      <p className="font-semibold text-emerald-400">{formatCurrency(svc.price)}</p>
+                    )}
                   </button>
                 ))}
                 {selectedCategoryId && servicesByCategory.length === 0 && (
-                  <p className="text-sm text-brand-text-muted">No hay servicios en esta categoría.</p>
+                  <p className="text-sm text-brand-text-muted">No hay tratamientos en esta categoría.</p>
                 )}
               </div>
             )}
@@ -359,7 +363,9 @@ function UserBookingModal({ isOpen, onClose, defaultServiceId = null }) {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-brand-text">{selectedService.name}</p>
-                  <p className="text-xs text-brand-text-muted">{formatCurrency(selectedService.price)} · {selectedService.duration} min</p>
+                  <p className="text-xs text-brand-text-muted">
+                    {features?.showPrices !== false ? `${formatCurrency(selectedService.price)} · ` : ''}{selectedService.duration} min
+                  </p>
                 </div>
               </div>
             )}

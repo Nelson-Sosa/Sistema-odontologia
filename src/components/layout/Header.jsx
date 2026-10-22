@@ -57,7 +57,7 @@ function Header({ onMenuClick }) {
           className={cn(
             'flex h-10 w-10 items-center justify-center rounded-xl',
             'text-brand-text-muted transition-colors hover:bg-brand-alt-row hover:text-brand-primary',
-            'focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold/50',
+            'focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/50',
             'lg:hidden'
           )}
         >
@@ -91,13 +91,13 @@ function Header({ onMenuClick }) {
               'relative flex h-10 w-10 items-center justify-center rounded-xl',
               'text-brand-text-muted transition-all duration-150',
               'hover:bg-brand-alt-row hover:text-brand-primary',
-              'focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold/50',
+              'focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/50',
               isNotificationsOpen && 'bg-brand-alt-row text-brand-primary'
             )}
           >
             <Bell className="h-5 w-5" aria-hidden="true" />
             {unreadCount > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand-gold px-1 text-[10px] font-bold leading-none text-white animate-badge-pulse">
+              <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand-accent px-1 text-[10px] font-bold leading-none text-white animate-badge-pulse">
                 {unreadCount > 9 ? '9+' : unreadCount}
               </span>
             )}
@@ -132,7 +132,7 @@ function Header({ onMenuClick }) {
               'flex items-center gap-2.5 rounded-xl px-2 py-1.5 min-h-[44px]',
               'text-sm transition-all duration-150',
               'hover:bg-brand-alt-row',
-              'focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold/50',
+              'focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/50',
               isUserMenuOpen && 'bg-brand-alt-row'
             )}
           >

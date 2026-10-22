@@ -6,7 +6,9 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useAppointmentsByClient, useCancelAppointment, useReplacePaymentProof } from '@/hooks/useAppointments'
 import { useServices } from '@/hooks/useServices'
 import { useAuth } from '@/context/AuthContext'
-import { useFeatures } from '@/hooks/useFeatures'
+import { useBranding } from '@/hooks/useBranding'
+import { buildWhatsAppConfirmationUrl } from '@/utils/whatsapp'
+import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon'
 import { ROUTES } from '@/routes/routes'
 import { APPOINTMENT_STATUS, PAYMENT_STATUS } from '@/constants/app'
 import { formatCurrency } from '@/utils/formatters'
@@ -19,7 +21,7 @@ import PaymentProofUploader from './PaymentProofUploader'
 
 export default function UserAppointmentsView() {
   const { userProfile, user } = useAuth()
-  const features = useFeatures()
+  const { branding, features } = useBranding()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -240,10 +242,28 @@ export default function UserAppointmentsView() {
                     </div>
                   )}
 
-                  {/* Cancel button */}
+                  {/* Cancel and WhatsApp buttons */}
                   {(appointment.status === APPOINTMENT_STATUS.PENDING ||
                     appointment.status === APPOINTMENT_STATUS.CONFIRMED) && (
-                    <div className="mt-4 flex justify-end border-t border-brand-border pt-3">
+                    <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-brand-border pt-3">
+                      <a
+                        href={buildWhatsAppConfirmationUrl({
+                          phone: branding?.whatsapp || branding?.phone,
+                          clientName: userProfile?.displayName || user?.displayName || 'Paciente',
+                          serviceName: appointment.serviceName,
+                          dateLabel: appointment.date?.seconds
+                            ? format(new Date(appointment.date.seconds * 1000), "EEEE d 'de' MMMM", { locale: es })
+                            : '',
+                          time: appointment.time,
+                          businessName: branding?.businessName || 'Gestión de Clínica Dental',
+                        })}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-500 hover:text-emerald-400 transition-colors"
+                      >
+                        <WhatsAppIcon className="h-3.5 w-3.5" />
+                        Confirmar por WhatsApp
+                      </a>
                       <button
                         onClick={() => handleCancel(appointment.id)}
                         disabled={isCancelling}

@@ -8,7 +8,9 @@ import { useActiveCategories } from '@/hooks/useServiceCategories'
 import { usePaymentSettings } from '@/hooks/usePaymentSettings'
 import { useBusinessSettings } from '@/hooks/useBusinessSettings'
 import { usePageTitle } from '@/hooks/usePageTitle'
-import { useFeatures } from '@/hooks/useFeatures'
+import { useBranding } from '@/hooks/useBranding'
+import { buildWhatsAppConfirmationUrl } from '@/utils/whatsapp'
+import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon'
 import {
   createGuestAppointment,
   createUserAppointment,
@@ -39,7 +41,7 @@ function BookingPage() {
   usePageTitle('Solicitar Cita')
   const navigate = useNavigate()
   const location = useLocation()
-  const features = useFeatures()
+  const { branding, features } = useBranding()
 
   const { user, userProfile, isAuthenticated, loading: authLoading, logout } = useAuth()
   const { data: services, isLoading: loadingServices } = useServices()
@@ -274,6 +276,21 @@ function BookingPage() {
     : ''
 
   const currentUserName = userProfile?.displayName || user?.displayName || user?.email?.split('@')[0] || null
+
+  const patientDisplayName = isAuthenticated
+    ? (userProfile?.displayName || user?.displayName || user?.email?.split('@')[0] || 'Paciente')
+    : (guestData?.name || 'Paciente')
+
+  const whatsappUrl = useMemo(() => {
+    return buildWhatsAppConfirmationUrl({
+      phone: branding?.whatsapp || branding?.phone,
+      clientName: patientDisplayName,
+      serviceName: selectedService?.name,
+      dateLabel,
+      time: slotTime,
+      businessName: branding?.businessName || 'Gestión de Clínica Dental',
+    })
+  }, [branding?.whatsapp, branding?.phone, branding?.businessName, patientDisplayName, selectedService?.name, dateLabel, slotTime])
 
   const totalSteps = paymentEnabled
     ? [STEPS.SERVICE, STEPS.SLOT, STEPS.IDENTITY, STEPS.PAYMENT]
@@ -519,6 +536,22 @@ function BookingPage() {
               <p className="text-xs text-brand-text-muted capitalize">{dateLabel} · {slotTime} hs</p>
             </div>
           )}
+
+          {/* ── WhatsApp Confirmation Button ─────────────────────────────── */}
+          <div className="mt-5 w-full max-w-sm">
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-full items-center justify-center gap-2.5 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-md shadow-emerald-600/25 transition-all duration-200 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-600/35 active:scale-[0.98]"
+            >
+              <WhatsAppIcon className="h-5 w-5" />
+              Confirmar cita por WhatsApp
+            </a>
+            <p className="mt-2 text-center text-xs text-brand-text-muted">
+              Te comunicará directo con la clínica con el mensaje de tu cita listo para enviar.
+            </p>
+          </div>
 
           {/* Guest → invite to create an account (not required) */}
           {!isAuthenticated && (

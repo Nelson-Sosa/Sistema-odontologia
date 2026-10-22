@@ -8,8 +8,12 @@ import { useAuth } from '@/context/AuthContext'
 import { useServices } from '@/hooks/useServices'
 import { useActiveCategories } from '@/hooks/useServiceCategories'
 import { useCreateAppointment } from '@/hooks/useAppointments'
+import { format } from 'date-fns'
+import { es } from 'date-fns/locale'
 import { usePaymentSettings } from '@/hooks/usePaymentSettings'
-import { useFeatures } from '@/hooks/useFeatures'
+import { useBranding } from '@/hooks/useBranding'
+import { buildWhatsAppConfirmationUrl } from '@/utils/whatsapp'
+import { WhatsAppIcon } from '@/components/icons/WhatsAppIcon'
 import { checkAppointmentConflict } from '@/services/appointments/appointmentsService'
 import { USER_ROLES, PAYMENT_PROVIDERS } from '@/constants/app'
 import { validateAppointmentDateTime } from '@/utils/dateValidation'
@@ -28,11 +32,11 @@ const SCHEMA_STEP2 = z.object({
   time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, 'Seleccioná un horario disponible'),
 })
 
-const STEPS = { CATEGORY: 0, SERVICE: 1, DETAILS: 2, PAYMENT: 3 }
+const STEPS = { CATEGORY: 0, SERVICE: 1, DETAILS: 2, PAYMENT: 3, SUCCESS: 4 }
 
 function UserBookingModal({ isOpen, onClose, defaultServiceId = null }) {
   const { userProfile, user, role } = useAuth()
-  const features = useFeatures()
+  const { branding, features } = useBranding()
   const { data: services, isLoading: loadingServices } = useServices()
   const { data: categories } = useActiveCategories()
   const { mutateAsync: createAppointment, isPending } = useCreateAppointment()
@@ -43,6 +47,7 @@ function UserBookingModal({ isOpen, onClose, defaultServiceId = null }) {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null)
   const [selectedServiceId, setSelectedServiceId] = useState(defaultServiceId)
   const [uploadedProof, setUploadedProof] = useState(null) // { publicId, secureUrl }
+  const [confirmedAppointment, setConfirmedAppointment] = useState(null)
 
   const availableCategories = categories?.filter((c) =>
     services?.some((s) => s.categoryId === c.id && s.active !== false)
@@ -77,8 +82,12 @@ function UserBookingModal({ isOpen, onClose, defaultServiceId = null }) {
   const formTime = watch('time')
 
   useEffect(() => {
-    if (!isOpen) return
+    if (!isOpen) {
+      setConfirmedAppointment(null)
+      return
+    }
     setUploadedProof(null)
+    setConfirmedAppointment(null)
     if (defaultServiceId) {
       setStep(STEPS.DETAILS)
       setSelectedServiceId(defaultServiceId)
@@ -180,8 +189,13 @@ function UserBookingModal({ isOpen, onClose, defaultServiceId = null }) {
           ? 'Cita enviada. Esperando aprobación del comprobante.'
           : 'Cita agendada correctamente'
       )
-      onClose()
-      reset()
+      setConfirmedAppointment({
+        serviceName: selectedService.name,
+        dateStr: formData.date,
+        time: formData.time,
+        clientName: userProfile?.displayName || user?.displayName || user?.email?.split('@')[0] || 'Paciente',
+      })
+      setStep(STEPS.SUCCESS)
     } catch {
       toast.error('No se pudo reservar la cita')
     }
@@ -236,10 +250,14 @@ function UserBookingModal({ isOpen, onClose, defaultServiceId = null }) {
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={() => { onClose(); reset() }}
       hideHeader
       footer={
-        (step === STEPS.DETAILS || step === STEPS.PAYMENT) && (
+        step === STEPS.SUCCESS ? (
+          <Button variant="secondary" onClick={() => { onClose(); reset() }} className="w-full">
+            Listo, volver a Mis Citas
+          </Button>
+        ) : (step === STEPS.DETAILS || step === STEPS.PAYMENT) && (
           <FormActions>
             <Button variant="ghost" onClick={onClose} disabled={isSubmitting || isPending}>
               Cancelar
@@ -259,7 +277,7 @@ function UserBookingModal({ isOpen, onClose, defaultServiceId = null }) {
       {/* Sticky wizard header */}
       <div className="sticky top-0 z-10 -mx-5 -mt-5 mb-4 border-b border-brand-border/40 bg-brand-card px-5 py-4 sm:-mx-6 sm:-mt-6 sm:mb-6 sm:px-6 sm:py-5">
         <div className="relative">
-          {step !== STEPS.CATEGORY && (
+          {step !== STEPS.CATEGORY && step !== STEPS.SUCCESS && (
             <button
               onClick={handleBack}
               className="absolute left-0 top-1/2 -translate-y-1/2 rounded-lg p-2 text-brand-text-muted transition-colors hover:bg-brand-pastel/50 hover:text-brand-text"
@@ -270,7 +288,7 @@ function UserBookingModal({ isOpen, onClose, defaultServiceId = null }) {
           )}
 
           <button
-            onClick={onClose}
+            onClick={() => { onClose(); reset() }}
             className="absolute right-0 top-1/2 -translate-y-1/2 rounded-lg p-2 text-brand-text-muted transition-colors hover:bg-brand-pastel/50 hover:text-brand-text"
             aria-label="Cerrar"
           >
@@ -278,17 +296,19 @@ function UserBookingModal({ isOpen, onClose, defaultServiceId = null }) {
           </button>
 
           <h2 className="px-12 text-center text-lg font-bold text-brand-text sm:text-xl">
-            Solicitar Cita
+            {step === STEPS.SUCCESS ? '¡Cita Confirmada!' : 'Solicitar Cita'}
           </h2>
           <p className="mt-1 px-2 text-center text-xs text-brand-text-muted sm:text-sm">
-            {step === STEPS.PAYMENT
+            {step === STEPS.SUCCESS
+              ? 'Tu cita quedó guardada en el sistema.'
+              : step === STEPS.PAYMENT
               ? 'Realizá el pago de la seña para confirmar tu cita.'
               : 'Podés agendar con hasta 2 horas de anticipación.'}
           </p>
         </div>
       </div>
 
-      {availableCategories.length > 0 && renderProgress()}
+      {availableCategories.length > 0 && step !== STEPS.SUCCESS && renderProgress()}
 
         {/* ── Step 0: Category */}
         {step === STEPS.CATEGORY && (
@@ -471,6 +491,51 @@ function UserBookingModal({ isOpen, onClose, defaultServiceId = null }) {
           </div>
         )}
       </form>
+      )}
+
+      {/* ── Step 4: Success with WhatsApp confirmation ─────────────────────── */}
+      {step === STEPS.SUCCESS && confirmedAppointment && (
+        <div className="flex flex-col items-center text-center py-2 sm:py-4">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/15">
+            <Check className="h-7 w-7 text-emerald-400" />
+          </div>
+
+          <h3 className="mt-4 text-xl font-bold text-brand-text">
+            ¡Cita registrada con éxito!
+          </h3>
+          <p className="mt-1 text-sm text-brand-text-muted max-w-sm">
+            Te esperamos en la clínica. Puedes confirmar tu cita directamente por WhatsApp ahora mismo.
+          </p>
+
+          <div className="mt-4 w-full rounded-xl border border-brand-border bg-brand-card p-4 text-left space-y-1.5">
+            <p className="text-sm font-semibold text-brand-text">{confirmedAppointment.serviceName}</p>
+            <p className="text-xs text-brand-text-muted capitalize">
+              {format(new Date(confirmedAppointment.dateStr + 'T12:00:00'), "EEEE d 'de' MMMM", { locale: es })} · {confirmedAppointment.time} hs
+            </p>
+          </div>
+
+          <div className="mt-5 w-full">
+            <a
+              href={buildWhatsAppConfirmationUrl({
+                phone: branding?.whatsapp || branding?.phone,
+                clientName: confirmedAppointment.clientName,
+                serviceName: confirmedAppointment.serviceName,
+                dateLabel: format(new Date(confirmedAppointment.dateStr + 'T12:00:00'), "EEEE d 'de' MMMM", { locale: es }),
+                time: confirmedAppointment.time,
+                businessName: branding?.businessName || 'Gestión de Clínica Dental',
+              })}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-full items-center justify-center gap-2.5 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-md shadow-emerald-600/25 transition-all duration-200 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-600/35 active:scale-[0.98]"
+            >
+              <WhatsAppIcon className="h-5 w-5" />
+              Confirmar cita por WhatsApp
+            </a>
+            <p className="mt-2 text-center text-xs text-brand-text-muted">
+              Abre WhatsApp con el mensaje de tu cita listo para enviar a la clínica.
+            </p>
+          </div>
+        </div>
       )}
     </Modal>
   )
